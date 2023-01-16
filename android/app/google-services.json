@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1069366135611",
+    "project_id": "illico-c3195",
+    "storage_bucket": "illico-c3195.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069366135611:android:e30342eafe28bffe02c51e",
+        "android_client_info": {
+          "package_name": "com.itlnd.illico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069366135611-bp49skk7aupvocvb9ocrir646lvaf3q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.itlnd.illico",
+            "certificate_hash": "79c31be46654412cb23361cd0647d81f55e4def4"
+          }
+        },
+        {
+          "client_id": "1069366135611-ce8if0sjsvbuteltekf1hh33nidaef1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAhWgjQoHmfigy28fVnIjBSS3aYVpDryc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069366135611-ce8if0sjsvbuteltekf1hh33nidaef1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

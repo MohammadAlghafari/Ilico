@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">charja_charity</string>
+    <string name="facebook_app_id">1317747569012085</string>
+    <string name="fb_login_protocol_scheme">fba6c184e4f29ade3b7c2874ff141e3b2c</string>
+    <string name="facebook_client_token">1e5021d6ea723d750b752cde8a2b266e</string>
+</resources>
