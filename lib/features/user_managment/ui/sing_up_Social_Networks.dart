@@ -1,5 +1,6 @@
 import 'package:charja_charity/core/utils/Navigation/Navigation.dart';
 import 'package:charja_charity/features/user_managment/widgets/social_media_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,7 +59,7 @@ class _SingUpSocialNetworksState extends State<SingUpSocialNetworks> {
                       width: 34.w,
                     ),
                     Text(
-                      "Create your account",
+                      "Create your account".tr(),
                       style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                     ),
                   ],
@@ -83,11 +84,11 @@ class _SingUpSocialNetworksState extends State<SingUpSocialNetworks> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "Influencer profile",
+                          "Influencer profile".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "Social networks",
+                          "Social networks".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -109,7 +110,7 @@ class _SingUpSocialNetworksState extends State<SingUpSocialNetworks> {
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 14.w),
           child: SocialMediaWidget(
-            btnName: "Confirm",
+            btnName: "Confirm".tr(),
             callback: (m) {},
           ),
         ),

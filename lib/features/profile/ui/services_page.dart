@@ -1,26 +1,39 @@
 import 'package:charja_charity/core/boilerplate/pagination/widgets/pagination_list.dart';
 import 'package:charja_charity/features/add_section/data/model/new_service.dart';
+import 'package:charja_charity/features/profile/data/model/profile_model.dart';
 import 'package:charja_charity/features/profile/widgets/service_item.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../data/model/get_product_model.dart';
-import '../data/profile_repository/profile_repository.dart';
-import '../data/use_case/get_product_usecase.dart';
+import '../../../core/boilerplate/pagination/cubits/pagination_cubit.dart';
+import '../../add_section/data/repository/add_section_repostory.dart';
+import '../../add_section/data/usecase/get_product_usecase.dart';
 
 class ServicesScreen extends StatefulWidget {
-  const ServicesScreen({Key? key}) : super(key: key);
+  final List<Activities> activities;
+  final ValueChanged voidCallback;
+
+  const ServicesScreen({
+    Key? key,
+    required this.activities,
+    required this.voidCallback,
+  }) : super(key: key);
 
   @override
   _ServicesScreenState createState() => _ServicesScreenState();
 }
 
 class _ServicesScreenState extends State<ServicesScreen> {
+  late PaginationCubit cubit;
   @override
   Widget build(BuildContext context) {
-    return PaginationList<GetproductModel>(
+    return PaginationList<AddService>(
+      onCubitCreated: (PaginationCubit cub) {
+        cubit = cub;
+        widget.voidCallback(cubit);
+      },
       withPagination: true,
       repositoryCallBack: (model) {
-        return GetProductUseCase(ProfileRepository())
+        return GetProductUseCase(AddSectionRepostory())
             .call(params: GetProductParams(request: model, type: "getService"));
       },
       listBuilder: (list) {
@@ -28,14 +41,19 @@ class _ServicesScreenState extends State<ServicesScreen> {
             itemCount: list.length,
             itemBuilder: ((context, index) {
               return ServiceItem(
+                cubit: cubit,
+                type: 1,
+                activites: widget.activities,
                 description: list[index].description!,
                 name: list[index].name!,
-                image: list[index].images![0],
+                image: list[index].images!.isNotEmpty ? list[index].images![0] : "",
                 price: list[index].price!,
                 service: AddService(
+                  id: list[index].id,
                   images: list[index].images,
+                  videos: list[index].videos,
                   price: list[index].price,
-                  categoryId: list[index].categoryId,
+                  category: list[index].category,
                   description: list[index].description,
                   name: list[index].name,
                 ),

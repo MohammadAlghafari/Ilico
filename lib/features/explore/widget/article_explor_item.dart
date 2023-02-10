@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:charja_charity/core/models/imageOrVideosFileType.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_styles.dart';
-import '../../../core/ui/widgets/view_profile_card.dart';
+import '../../../core/ui/widgets/image_and_name_widget.dart';
 import '../ui/article_details.dart';
 import 'Indicator_widget.dart';
 import 'carousel_slider_widget.dart';
@@ -25,9 +23,9 @@ class ArticleExplorItem extends StatefulWidget {
 class _ArticleExplorItemState extends State<ArticleExplorItem> {
   int activeIndex = 0;
   final urlImages = [
-    FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png')),
-    FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png')),
-    FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png'))
+    FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file"),
+    FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file"),
+    FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file")
   ];
   late CarouselController _controller;
 

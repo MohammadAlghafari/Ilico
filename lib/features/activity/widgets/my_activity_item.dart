@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/ui/widgets/view_profile_card.dart';
+import '../../../core/ui/widgets/unicorn_outline_button.dart';
 import '../../../core/utils/Navigation/Navigation.dart';
 
 class MyActivityItem extends StatelessWidget {
@@ -40,10 +40,7 @@ class MyActivityItem extends StatelessWidget {
                     end: Alignment.bottomCenter,
                   ),
                   onPressed: () {},
-                  child: Padding(
-                    padding: EdgeInsets.all(4.h),
-                    child: Image.asset("assets/images/Rectangle.png"),
-                  ),
+                  photoUrl: null,
                 ),
               ),
               Expanded(

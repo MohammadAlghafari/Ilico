@@ -1,11 +1,16 @@
 import 'package:charja_charity/core/boilerplate/create_model/widgets/create_model.dart';
 import 'package:charja_charity/core/constants/app_colors.dart';
 import 'package:charja_charity/core/constants/app_styles.dart';
+import 'package:charja_charity/core/http/graphQl_provider.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
 import 'package:charja_charity/features/user_managment/ui/Sp_Sing_Up_Subscriptions.dart';
 import 'package:charja_charity/features/user_managment/ui/signup_screen.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/app_icons.dart';
 import '../../../core/constants/end_point.dart';
@@ -19,6 +24,8 @@ import '../../../core/utils/form_utils/form_state_mixin.dart';
 import '../../../core/utils/validators/base_validator.dart';
 import '../../../core/utils/validators/email_validator.dart';
 import '../../../core/utils/validators/required_validator.dart';
+import '../../search/data/repository/search_repository.dart';
+import '../../search/data/usecase/store_location_usecase.dart';
 import '../data/model/login_model.dart';
 import '../data/repository/auth_repository.dart';
 import '../data/usecase/login_usecse.dart';
@@ -53,7 +60,7 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
+                          SvgPicture.asset(
                             logo_White,
                             width: 60,
                             height: 88.3,
@@ -62,7 +69,7 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                             height: 40,
                           ),
                           Text(
-                            "Sign in",
+                            "Sign in".tr(),
                             style: AppTheme.headline2.copyWith(color: Colors.white),
                           )
                         ],
@@ -87,8 +94,8 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                     focusNode: form.nodes[0],
                     nextFocusNode: form.nodes[1],
                     textEditingController: form.controllers[0],
-                    hintText: 'Enter your email',
-                    labelText: 'Email',
+                    hintText: 'Enter your email'.tr(),
+                    labelText: 'Email'.tr(),
                     labelStyle: AppTheme.subtitle2.copyWith(fontSize: 14),
                   ),
                 ),
@@ -109,8 +116,8 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                     },
                     focusNode: form.nodes[1],
                     textEditingController: form.controllers[1],
-                    hintText: 'Enter your password',
-                    labelText: 'Password',
+                    hintText: 'Enter your password'.tr(),
+                    labelText: 'Password'.tr(),
                     labelStyle: AppTheme.subtitle2.copyWith(fontSize: 14),
                   ),
                 ),
@@ -128,7 +135,7 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                         // forgetPasswordSheet();
                       },
                       child: Text(
-                        'Forgot password ?',
+                        'Forgot password ?'.tr(),
                         style: AppTheme.subtitle2.copyWith(fontSize: 14, color: AppColors.kPDarkBlueColor),
                       ),
                     ),
@@ -137,19 +144,23 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                 SizedBox(
                   height: 28.h,
                 ),
-                const SignInWidget(fromLogin: true),
+                SignInWidget(
+                    fromLogin: true,
+                    onSuccess: (val) {
+                      widget.onSuccess?.call(val);
+                    }),
                 SizedBox(
                   height: 85.h,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Don’t have an account ?', style: AppTheme.bodyText1.copyWith(fontSize: 14)),
+                      Text('Don’t have an account ?'.tr(), style: AppTheme.bodyText1.copyWith(fontSize: 14)),
                       InkWell(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 6),
                           child: Text(
-                            'Sign up ',
+                            'Sign up'.tr(),
                             style: AppTheme.subtitle2.copyWith(fontSize: 14, color: AppColors.kPOrangeColor),
                           ),
                         ),
@@ -180,23 +191,47 @@ class LoginScreenState extends State<LoginScreen> with FormStateMinxin {
                     return form.validate();
                   },
                   onSuccess: (LoginModel model) {
+                    CubeUser user = CubeUser(
+                        id: model.chatUserModel!.id,
+                        password: model.chatUserModel!.password,
+                        login: model.chatUserModel!.login,
+                        customData: model.chatUserModel!.customData);
                     if (model.isVerified == null) {
+                      CashHelper.cashChatUser(user);
+                      createSession(user).then((cubeSession) async {
+                        debugPrint("createSession cubeSession: $cubeSession");
+
+                        CubeChatConnection.instance.login(user).then((loggedUser) {
+                          debugPrint("User logged in $loggedUser");
+                        }).catchError((error) {
+                          debugPrint("log in error $error");
+                        });
+                      }).catchError((error) {
+                        print("create session error $error");
+                      });
                       CashHelper.saveData(key: kACCESSTOKEN, value: model.accessToken);
                       CashHelper.saveData(key: kREFRESHTOKEN, value: model.refreshToken);
                       // CashHelper.saveData(key: kROLE, value: model.role);//todo
                       CashHelper.saveData(key: kAccessTOKENEXPIRATIONDATE, value: model.accessTokenExpirationDate);
                       CashHelper.saveData(key: REFRESHTOKENEXPIRATIONDATE, value: model.refreshTokenExpirationDate);
                       CashHelper.saveData(key: userType, value: model.userType);
+                      GraphQlProvider.setQlLink(auth: true);
                       if (model.userStatus == "InActive") {
                         Navigation.push(const SpSingUpSubscriptions());
                       } else {
                         CashHelper.saveData(key: isPay, value: true);
                         widget.onSuccess?.call(true);
+                        if (CashHelper.getData(key: LATITUDE) != null && CashHelper.getData(key: LONGITUDE) != null) {
+                          StoreLocationUseCase(SearchRepository()).call(
+                              params: StoreLocationParams(
+                                  latitude: CashHelper.getData(key: LATITUDE),
+                                  longitude: CashHelper.getData(key: LONGITUDE)));
+                        }
                       }
                     } else {
                       CustomSheet.show(
                           isDismissible: false,
-                          title: "Verify Mobile Number",
+                          title: "Verify Mobile Number".tr(),
                           context: context,
                           child: VerficationBottomSheet(
                             phoneNumber: model.phoneNumber,

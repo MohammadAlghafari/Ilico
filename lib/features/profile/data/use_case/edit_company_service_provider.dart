@@ -5,13 +5,7 @@ import '../model/profile_model.dart';
 import '../profile_repository/profile_repository.dart';
 
 class EditCompanyProfileParams extends BaseParams {
-  EditCompanyProfileParams(
-      {this.name,
-      this.description,
-      this.iban,
-      this.phoneNumber,
-      this.job,
-      this.sirenNumber});
+  EditCompanyProfileParams({this.name, this.description, this.iban, this.phoneNumber, this.job, this.sirenNumber});
 
   final String? phoneNumber;
   final String? name;
@@ -32,8 +26,7 @@ class EditCompanyProfileParams extends BaseParams {
   }
 }
 
-class EditCompanyProfileUseCase
-    extends UseCase<Company, EditCompanyProfileParams> {
+class EditCompanyProfileUseCase extends UseCase<Company, EditCompanyProfileParams> {
   final ProfileRepository repository;
 
   EditCompanyProfileUseCase(this.repository);

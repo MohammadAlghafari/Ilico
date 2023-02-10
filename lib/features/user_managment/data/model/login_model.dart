@@ -1,5 +1,6 @@
 import 'package:charja_charity/core/data_source/model.dart';
 import 'package:charja_charity/core/responses/ApiResponse.dart';
+import 'package:charja_charity/features/user_managment/data/model/user_model.dart';
 
 class LoginResponse extends ApiResponse<LoginModel> {
   LoginResponse({required super.errors, required super.success, required super.data});
@@ -18,10 +19,12 @@ class LoginModel extends BaseModel {
   bool? isVerified;
   String? phoneNumber;
   String? userStatus;
+  ChatUserModel? chatUserModel;
 
   LoginModel(
       {this.accessToken,
       this.userStatus,
+      this.chatUserModel,
       this.accessTokenExpirationDate,
       this.refreshToken,
       this.refreshTokenExpirationDate,
@@ -38,6 +41,9 @@ class LoginModel extends BaseModel {
     isVerified = json['isVerified'];
     phoneNumber = json['phoneNumber'];
     userStatus = json["userStatus"];
+    if (json['userChat'] != null) {
+      chatUserModel = ChatUserModel.formJson(json['userChat']);
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -44,7 +44,7 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 27.w),
-              child: const SearchTextFilled(
+              child:  SearchTextFilled(
                 // controller: articlesController,
                 hintText: 'Search an article...',
                 isSuffixIcon: false,

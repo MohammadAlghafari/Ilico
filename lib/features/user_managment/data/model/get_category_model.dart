@@ -14,11 +14,31 @@ class CategoriesResponse extends ApiResponse<CategoryList> {
 class CategoryList extends BaseModel {
   CategoryList({this.data});
   List<Activities>? data;
+  Set<Activities>? tempData;
+
+  // Set<Activities>? allActivites;
+
+  // Set<Activities>? recentActivites;
 
   CategoryList.fromJson(Map<String, dynamic> json) {
+    tempData = {};
     data = [];
-    json['data'].forEach((element) {
-      data?.add(Activities.fromJson(element));
+    //  allActivites = {};
+    // if (json['data']['allCategories'].length > 0) {
+
+    json['data']['recent'].forEach((element) {
+      tempData?.add(Activities.fromJson(element));
     });
+    tempData!.forEach((element) {
+      element.isSelected = true;
+    });
+
+    json['data']['allCategories'].forEach((element) {
+      tempData?.add(Activities.fromJson(element));
+    });
+    data = tempData!.toList();
+
+    // print(data.toString());
+//    }
   }
 }

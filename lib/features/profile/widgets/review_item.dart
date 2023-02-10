@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_styles.dart';
-import '../../../core/ui/widgets/view_profile_card.dart';
+import '../../../core/ui/widgets/image_and_name_widget.dart';
 
 class ReviewItem extends StatefulWidget {
   const ReviewItem({Key? key}) : super(key: key);

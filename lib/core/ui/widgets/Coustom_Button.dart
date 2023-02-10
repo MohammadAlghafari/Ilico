@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,7 +49,7 @@ class CoustomButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 5, bottom: 5),
         child: widgetContent ??
-            Text(buttonName!,
+            Text(buttonName!.tr(),
                 textAlign: TextAlign.center, style: AppTheme.button.copyWith(color: AppColors.kPDarkBlueColor)),
       ),
     );

@@ -17,7 +17,7 @@ class CreateModel<Model> extends StatefulWidget {
   final CreatedCallback? onCubitCreated;
   final Widget child;
   final Function? onTap;
-  final bool? withValidation;
+  final bool withValidation;
   final Function? onError;
 
   const CreateModel(
@@ -27,7 +27,7 @@ class CreateModel<Model> extends StatefulWidget {
       this.onCubitCreated,
       required this.child,
       this.onSuccess,
-      this.withValidation,
+      required this.withValidation,
       this.loadingHeight,
       this.onError})
       : super(key: key);

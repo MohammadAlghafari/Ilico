@@ -2,6 +2,9 @@ import 'package:charja_charity/core/data_source/model.dart';
 import 'package:charja_charity/core/responses/ApiResponse.dart';
 import 'package:charja_charity/core/utils/cashe_helper.dart';
 
+import '../../../add_section/data/model/get_article_model.dart';
+import '../../../user_managment/data/model/user_model.dart';
+
 class ProfileResponse extends ApiResponse<UserInfo> {
   ProfileResponse({required super.errors, required super.success, required super.data});
 
@@ -88,10 +91,12 @@ class ProfileInfluencerModel extends UserInfo {
       GeneralInformation? generalInformation,
       Address? address,
       String? photoUrl,
+      GetArticle? myArticle,
       String? userStatus,
       int? completePercent,
       List<Activities>? activities,
       this.twitterUrl,
+      this.isFav,
       this.twitterFollowers,
       this.facebookFollowers,
       this.facebookUrl,
@@ -113,6 +118,7 @@ class ProfileInfluencerModel extends UserInfo {
             activities: activities);
 
   String? facebookUrl;
+  bool? isFav;
   int? facebookFollowers;
   String? instagramUrl;
   int? instagramFollowers;
@@ -128,6 +134,8 @@ class ProfileInfluencerModel extends UserInfo {
   factory ProfileInfluencerModel.fromJson(Map<String, dynamic> json) {
     return ProfileInfluencerModel(
       id: json['id'],
+      isFav: json['isFavorite'] ?? false,
+      // myArticle: json['articles'] != null ? GetArticle.fromJson(json["articles"]) : null,
       generalInformation:
           json['generalInformation'] != null ? GeneralInformation.fromJson(json['generalInformation']) : null,
       address: json['address'] != null ? Address.fromJson(json['address']) : null,
@@ -154,24 +162,28 @@ class ProfileInfluencerModel extends UserInfo {
 class ProfileSpModel extends UserInfo {
   bool? isCustomer;
   bool? isAvailable;
+  bool? isEventProgress;
   String? stripeCustomerId;
   Customer? customerModel;
   Company? companyModel;
+  int? activityCount;
 
-  ProfileSpModel({
-    String? id,
-    GeneralInformation? generalInformation,
-    Address? address,
-    String? photoUrl,
-    String? userStatus,
-    int? completePercent,
-    List<Activities>? activities,
-    this.customerModel,
-    this.isAvailable,
-    this.companyModel,
-    this.isCustomer,
-    this.stripeCustomerId,
-  }) : super(
+  ProfileSpModel(
+      {String? id,
+      GeneralInformation? generalInformation,
+      Address? address,
+      String? photoUrl,
+      String? userStatus,
+      int? completePercent,
+      List<Activities>? activities,
+      this.customerModel,
+      this.isAvailable,
+      this.companyModel,
+      this.isCustomer,
+      this.stripeCustomerId,
+      this.isEventProgress,
+      this.activityCount})
+      : super(
             id: id,
             address: address,
             completePercent: completePercent,
@@ -195,6 +207,8 @@ class ProfileSpModel extends UserInfo {
       customerModel: json['customer'] != null ? Customer.fromJson(json['customer']) : null,
       companyModel: json['company'] != null ? Company.fromJson(json['company']) : null,
       activities: json['activities'] != null ? Activities.getActivities(json['activities']) : null,
+      isEventProgress: json['isEventProgress'],
+      activityCount: json['activityCount'],
     );
   }
 }
@@ -206,8 +220,24 @@ class GeneralInformation {
   String? dob;
   String? gender;
   String? phoneNumber;
+  String? fullName;
+  double? distance;
+  double? latitude;
+  double? longitude;
+  ChatUserModel? chatUserModel;
 
-  GeneralInformation({this.email, this.firstName, this.lastName, this.dob, this.gender, this.phoneNumber});
+  GeneralInformation(
+      {this.email,
+      this.firstName,
+      this.lastName,
+      this.fullName,
+      this.dob,
+      this.gender,
+      this.phoneNumber,
+      this.chatUserModel,
+      this.distance,
+      this.latitude,
+      this.longitude});
 
   GeneralInformation.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -216,6 +246,13 @@ class GeneralInformation {
     dob = json['dob'];
     gender = json['gender'];
     phoneNumber = json['phoneNumber'];
+    fullName = json['fullName'];
+    distance = (json["distance"] != null ? double.parse(json['distance'].toString()) : null);
+    latitude = (json["latitude"] != null ? double.parse(json['latitude'].toString()) : null);
+    longitude = (json["longitude"] != null ? double.parse(json['longitude'].toString()) : null);
+    if (json['userChat'] != null) {
+      chatUserModel = ChatUserModel.formJson(json['userChat']);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -226,6 +263,11 @@ class GeneralInformation {
     data['dob'] = dob;
     data['gender'] = gender;
     data['phoneNumber'] = phoneNumber;
+    data['fullName'] = fullName;
+    data["distance"] = distance;
+    data["latitude"] = latitude;
+    data["longitude"] = longitude;
+
     return data;
   }
 }
@@ -291,6 +333,17 @@ class Company extends BaseModel {
     iban = json['iban'];
     sirenNumber = json['sirenNumber'];
   }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['job'] = this.job;
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['phoneNumber'] = this.phoneNumber;
+    data['iban'] = this.iban;
+    data['sirenNumber'] = this.sirenNumber;
+    return data;
+  }
 }
 
 class Activities extends BaseModel {
@@ -299,7 +352,7 @@ class Activities extends BaseModel {
   String? description;
   bool? isActive;
   late bool isSelected;
-  Activities({this.id, this.name, this.description, this.isSelected = false, this.isActive});
+  Activities({this.id, this.name, this.description, this.isSelected = false, this.isActive}) : super(id: id);
 
   Activities.fromJson(Map<String, dynamic> json) {
     id = json['id'];

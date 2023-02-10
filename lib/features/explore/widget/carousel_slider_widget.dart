@@ -60,7 +60,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
         viewportFraction = 1;
         height = 262.h;
         width = 262.h;
-        fit = BoxFit.cover;
+        fit = BoxFit.fill;
 
         break;
       case SliderType.item:
@@ -95,6 +95,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
       itemBuilder: (context, index, real) {
         if (widget.urlImagesList[index].type == 1) {
           return ImageWidget(
+            imageType: widget.urlImagesList[index].imageType!,
             height: height!,
             width: width!,
             fit: fit!,
@@ -102,6 +103,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
           );
         } else {
           return VideoWidget(
+            imageType: widget.urlImagesList[index].imageType!,
             height: height!,
             width: width!,
             fit: fit!,

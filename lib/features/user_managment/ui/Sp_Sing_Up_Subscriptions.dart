@@ -3,6 +3,7 @@ import 'package:charja_charity/core/constants/app_icons.dart';
 import 'package:charja_charity/features/user_managment/data/model/supscription_model.dart';
 import 'package:charja_charity/features/user_managment/data/repository/auth_repository.dart';
 import 'package:charja_charity/features/user_managment/ui/payment_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +67,7 @@ class _SpSingUpSubscriptionsState extends State<SpSingUpSubscriptions> {
                       width: 34.w,
                     ),
                     Text(
-                      "Create your account",
+                      "Create your account".tr(),
                       style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                     ),
                   ],
@@ -90,7 +91,7 @@ class _SpSingUpSubscriptionsState extends State<SpSingUpSubscriptions> {
                       height: 14.h,
                     ),
                     Text(
-                      "Subscriptions",
+                      "Subscriptions".tr(),
                       style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                     ),
                     // Row(
@@ -133,7 +134,7 @@ class _SpSingUpSubscriptionsState extends State<SpSingUpSubscriptions> {
                     height: 24.h,
                   ),
                   Text(
-                    "Select your plan",
+                    "Select your plan".tr(),
                     style: AppTheme.headline5.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -258,7 +259,7 @@ class _SpSingUpSubscriptionsState extends State<SpSingUpSubscriptions> {
                 children: [
                   Expanded(
                     child: CoustomButton(
-                        buttonName: "continue",
+                        buttonName: "continue".tr(),
                         backgoundColor: AppColors.kWhiteColor,
                         borderSideColor: AppColors.kPDarkBlueColor,
                         borderRadius: 10.0.r,

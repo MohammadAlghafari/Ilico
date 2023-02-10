@@ -19,6 +19,11 @@ class ArticleDialog extends StatefulWidget {
 class _ArticleDialogState extends State<ArticleDialog> {
   final CarouselController controller = CarouselController();
   int activeIndex = 0;
+  @override
+  void initState() {
+    activeIndex = widget.initIndex!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

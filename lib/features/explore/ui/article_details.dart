@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:charja_charity/core/constants/app_colors.dart';
 import 'package:charja_charity/core/ui/app_bar/app_bar_widget.dart';
@@ -9,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../core/models/imageOrVideosFileType.dart';
 import '../../../core/ui/dialogs/app_dialog.dart';
-import '../../../core/ui/widgets/view_profile_card.dart';
+import '../../../core/ui/widgets/image_and_name_widget.dart';
 import '../widget/article_dialog.dart';
 import '../widget/carousel_slider_widget.dart';
 import '../widget/indicator_widget.dart';
@@ -25,9 +23,9 @@ class _ArticleDetailState extends State<ArticleDetail> {
   final CarouselController controller = CarouselController();
   int activeIndex = 0;
   final urlImages = [
-    FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png')),
-    FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png')),
-    FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png'))
+    FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file"),
+    FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file"),
+    FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file")
   ];
   @override
   Widget build(BuildContext context) {
@@ -80,9 +78,9 @@ class _ArticleDetailState extends State<ArticleDetail> {
                   AppCustomAlertDialog.dialog(
                       widget: ArticleDialog(
                         imageOrVideosList: [
-                          FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png')),
-                          FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png')),
-                          FileTypeImageOrVideos(type: 1, imageFile: File('assets/images/article.png'))
+                          FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file"),
+                          FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file"),
+                          FileTypeImageOrVideos(type: 1, imageFile: 'assets/images/article.png', imageType: "file")
                         ],
                       ),
                       context: context);

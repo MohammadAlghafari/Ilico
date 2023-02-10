@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../core/ui/widgets/Coustom_Button.dart';
-import '../../../core/ui/widgets/view_profile_card.dart';
+import '../../../core/ui/widgets/image_and_name_widget.dart';
 import '../../../core/utils/form_utils/form_state_mixin.dart';
 
 class AddReviewContent extends StatefulWidget {

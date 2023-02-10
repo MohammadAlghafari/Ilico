@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/ui/widgets/Coustom_Button.dart';
-import '../../../core/ui/widgets/view_profile_card.dart';
+import '../../../core/ui/widgets/image_and_name_widget.dart';
 import '../widgets/add_review_content.dart';
 import '../widgets/my_activity_item.dart';
 

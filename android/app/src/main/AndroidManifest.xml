@@ -15,10 +15,22 @@
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyAAhWgjQoHmfigy28fVnIjBSS3aYVpDryc"/>
+           android:value= 'AIzaSyAAhWgjQoHmfigy28fVnIjBSS3aYVpDryc'/>
        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <activity
+            android:name="com.aboutyou.dart_packages.sign_in_with_apple.SignInWithAppleCallback"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
+                <data android:scheme="signinwithapple" />
+                <data android:path="callback" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"

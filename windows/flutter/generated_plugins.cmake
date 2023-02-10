@@ -4,7 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
-  geolocator_windows
+  flutter_webrtc
+  platform_device_id_windows
   smart_auth
 )
 

@@ -13,12 +13,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final Widget? titleWidget;
   final bool? isCenterTitle;
   final Function? onBackPress;
+  final double? titleSpacing;
   const AppBarWidget(
       {Key? key,
       this.leadingWidget,
       this.onBackPress,
       this.titleWidget,
       this.isCenterTitle,
+        this.titleSpacing,
       this.title,
       this.appBarHeight,
       required this.action,
@@ -32,6 +34,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0.0,
+      titleSpacing: titleSpacing,
       leading: withBack
           ? IconButton(
               icon: const Icon(Icons.arrow_back,

@@ -140,9 +140,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           readOnly: widget.readOnly,
           inputFormatters: widget.keyboardType == TextInputType.number
               ? [FilteringTextInputFormatter.allow(RegExp('[0-9]'))]
-              : [
-                  NoLeadingSpaceFormatter(),
-                ],
+              : widget.inputFormatters,
           decoration: InputDecoration(
             errorMaxLines: 3,
             hintText: widget.hintText,

@@ -1,7 +1,7 @@
 import 'package:charja_charity/core/constants/app_icons.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
 import 'package:charja_charity/core/utils/form_utils/form_state_mixin.dart';
-import 'package:charja_charity/features/search/ui/search_Screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +11,7 @@ import '../../../core/constants/app_styles.dart';
 import '../../../core/ui/widgets/Coustom_Button.dart';
 import '../../../core/ui/widgets/custom_text_field.dart';
 import '../../../core/utils/Navigation/Navigation.dart';
+import '../../search/ui/search_result_list_view.dart';
 import '../widgets/sign_header_widget.dart';
 
 class SPSingUpServices extends StatefulWidget {
@@ -56,7 +57,7 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                       width: 34.w,
                     ),
                     Text(
-                      "Create your account",
+                      "Create your account".tr(),
                       style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                     ),
                   ],
@@ -95,11 +96,11 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "Subscriptions",
+                          "Subscriptions".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "Services",
+                          "Services".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -127,7 +128,7 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                 //TODO Move To Home Page
                 InkWell(
                   onTap: () {
-                    Navigation.push(SearchScreen());
+                    Navigation.push(SearchListViewScreen());
                   },
                   child: Container(
                     padding: EdgeInsets.all(10.r),
@@ -149,7 +150,7 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                           ),
                         ),
                         Text(
-                          "Search a service...",
+                          "Search a service...".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kGrayTextField.withOpacity(0.5)),
                         )
                       ],
@@ -157,15 +158,15 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                   ),
                 ),
                 CustomTextField(
-                  labelText: 'Add your first service',
+                  labelText: 'Add your first service'.tr(),
                   labelStyle: AppTheme.bodyText2,
-                  hintText: 'Add your first service',
+                  hintText: 'Add your first service'.tr(),
                   textEditingController: form.controllers[0],
                   focusNode: form.nodes[0],
                   nextFocusNode: form.nodes[1],
                 ),
                 CustomTextField(
-                  labelText: 'Service’s price',
+                  labelText: 'Service’s price'.tr(),
                   labelStyle: AppTheme.bodyText2,
                   hintText: '00.00',
                   textEditingController: form.controllers[1],
@@ -175,9 +176,9 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                   isSuffixIcon: true,
                 ),
                 CustomTextField(
-                  labelText: 'Service’s description',
+                  labelText: 'Service’s description'.tr(),
                   labelStyle: AppTheme.bodyText2,
-                  hintText: 'Type service description here...',
+                  hintText: 'Type service description here...'.tr(),
                   textEditingController: form.controllers[2],
                   focusNode: form.nodes[2],
                   maxLine: 5,
@@ -189,7 +190,7 @@ class _SPSingUpServicesState extends State<SPSingUpServices> with FormStateMinxi
                   children: [
                     Expanded(
                       child: CoustomButton(
-                          buttonName: "Confirm and continue",
+                          buttonName: "Confirm and continue".tr(),
                           backgoundColor: AppColors.kWhiteColor,
                           borderSideColor: AppColors.kPDarkBlueColor,
                           borderRadius: 10.0.r,

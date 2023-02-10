@@ -1,4 +1,5 @@
 import 'package:charja_charity/core/constants/end_point.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CashHelper {
@@ -30,6 +31,12 @@ class CashHelper {
     await sharedPreferences.remove(REFRESHTOKENEXPIRATIONDATE);
     await sharedPreferences.remove(isPay);
     await sharedPreferences.remove(userType);
+    await sharedPreferences.remove(LATITUDE);
+    await sharedPreferences.remove(LONGITUDE);
+    await sharedPreferences.remove(customData);
+    await sharedPreferences.remove(chatPassword);
+    await sharedPreferences.remove(chatLogin);
+    await sharedPreferences.remove(chatUserId);
   }
 
   static bool get authorized {
@@ -49,5 +56,21 @@ class CashHelper {
   static String? getRole() {
     String temp = CashHelper.getData(key: userType);
     return temp;
+  }
+
+  static void cashChatUser(CubeUser user) {
+    CashHelper.saveData(key: chatUserId, value: user.id);
+    CashHelper.saveData(key: chatLogin, value: user.login);
+    CashHelper.saveData(key: chatPassword, value: user.password);
+    CashHelper.saveData(key: customData, value: user.customData);
+  }
+
+  static getChatUser() {
+    CubeUser user = CubeUser(
+        id: CashHelper.getData(key: chatUserId),
+        password: CashHelper.getData(key: chatPassword),
+        login: CashHelper.getData(key: chatLogin),
+        customData: CashHelper.getData(key: customData));
+    return user;
   }
 }

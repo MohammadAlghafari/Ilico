@@ -146,12 +146,20 @@ abstract class RemoteDataSource {
     required QlMethod method,
     required String query,
     Map<String, dynamic>? params,
+    required String modelKey,
     bool withAuthentication = false,
+    bool withCash = true,
   }) async {
     ModelsFactory.getInstance()!.registerModel(responseStr, converter);
-
+    print('with cash $withCash');
     var response = await GraphQlProvider.send<Data>(
-        converter: converter, method: QlMethod.query, query: query, strString: responseStr, params: params);
+        withCash: withCash,
+        modelKey: modelKey,
+        converter: converter,
+        method: method,
+        query: query,
+        strString: responseStr,
+        params: params);
 
     return Right(response).value;
   }

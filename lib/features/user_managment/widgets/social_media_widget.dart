@@ -5,6 +5,7 @@ import 'package:charja_charity/core/utils/Navigation/Navigation.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
 import 'package:charja_charity/features/profile/data/model/profile_model.dart';
 import 'package:charja_charity/features/profile/data/use_case/social_data_usecase.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,17 +41,23 @@ class _SocialMediaWidgetState extends State<SocialMediaWidget> with FormStateMin
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        buildSingleRowItem([0, 1], [0, 1, 2], ["Facebook profile URL", "No. of followers"], ["https://", "0000"],
+        buildSingleRowItem(
+            [0, 1], [0, 1, 2], ["Facebook profile URL".tr(), "No. of followers".tr()], ["https://", "0000"],
             url: widget.model?.facebookUrl, number: widget.model?.facebookFollowers),
-        buildSingleRowItem([2, 3], [2, 3, 4], ["Instagram profile URL", "No. of followers"], ["https://", "0000"],
+        buildSingleRowItem(
+            [2, 3], [2, 3, 4], ["Instagram profile URL".tr(), "No. of followers".tr()], ["https://", "0000"],
             url: widget.model?.instagramUrl, number: widget.model?.instagramFollowers),
-        buildSingleRowItem([4, 5], [4, 5, 6], ["Tiktok profile URL", "No. of followers"], ["https://", "0000"],
+        buildSingleRowItem(
+            [4, 5], [4, 5, 6], ["Tiktok profile URL".tr(), "No. of followers".tr()], ["https://", "0000"],
             url: widget.model?.tiktokUrl, number: widget.model?.tiktokFollowers),
-        buildSingleRowItem([6, 7], [6, 7, 8], ["Youtube profile URL", "No. of followers"], ["https://", "0000"],
+        buildSingleRowItem(
+            [6, 7], [6, 7, 8], ["Youtube profile URL".tr(), "No. of followers".tr()], ["https://", "0000"],
             url: widget.model?.youtubeUrl, number: widget.model?.youtubeFollowers),
-        buildSingleRowItem([8, 9], [8, 9, 10], ["Twitter profile URL", "No. of followers"], ["https://", "0000"],
+        buildSingleRowItem(
+            [8, 9], [8, 9, 10], ["Twitter profile URL".tr(), "No. of followers".tr()], ["https://", "0000"],
             url: widget.model?.twitterUrl, number: widget.model?.twitterFollowers),
-        buildSingleRowItem([10, 11], [10, 11], ["Snapchat profile URL", "No. of followers"], ["https://", "0000"],
+        buildSingleRowItem(
+            [10, 11], [10, 11], ["Snapchat profile URL".tr(), "No. of followers".tr()], ["https://", "0000"],
             isEndText: true, url: widget.model?.snapchatUrl, number: widget.model?.snapchatFollowers),
         SizedBox(
           height: 20,
@@ -65,7 +72,7 @@ class _SocialMediaWidgetState extends State<SocialMediaWidget> with FormStateMin
               builder: (context) {
                 return AppDialog(
                     isHaveCancel: false,
-                    Confirm: "OK",
+                    Confirm: "OK".tr(),
                     btnWidth: 114.w,
                     buildContext: context,
                     body: Column(
@@ -75,7 +82,7 @@ class _SocialMediaWidgetState extends State<SocialMediaWidget> with FormStateMin
                           child: SvgPicture.asset(checkCircle),
                         ),
                         Text(
-                          "Changes have been saved",
+                          "Changes have been saved".tr(),
                           style: AppTheme.headline3
                               .copyWith(fontWeight: FontWeight.w500, color: AppColors.kPDarkBlueColor),
                           textAlign: TextAlign.center,
@@ -83,7 +90,7 @@ class _SocialMediaWidgetState extends State<SocialMediaWidget> with FormStateMin
                       ],
                     ),
                     function: () {
-                      if (widget.btnName == 'Confirm') {
+                      if (widget.btnName == 'Confirm'.tr()) {
                         Navigation.push(SignUpUploadPicture());
                       } else {
                         FocusScope.of(context).unfocus();
@@ -167,7 +174,8 @@ class _SocialMediaWidgetState extends State<SocialMediaWidget> with FormStateMin
                   focusNode: form.nodes[nodes[1]],
                   nextFocusNode: form.nodes[nodes[2]],
                   keyboardType: TextInputType.number,
-                  enabled: form.controllers[controller[0]].text.isNotEmpty || url != "" ? true : false,
+                  enabled:
+                      form.controllers[controller[0]].text.isNotEmpty || (url != null && url.isNotEmpty) ? true : false,
                 ),
               )
             : Expanded(
@@ -180,7 +188,8 @@ class _SocialMediaWidgetState extends State<SocialMediaWidget> with FormStateMin
                   focusNode: form.nodes[nodes[1]],
                   initialValue: number != null && number > 0 ? (number).toString() : null,
                   keyboardType: TextInputType.number,
-                  enabled: form.controllers[controller[0]].text.isNotEmpty || url != "" ? true : false,
+                  enabled:
+                      form.controllers[controller[0]].text.isNotEmpty || (url != null && url.isNotEmpty) ? true : false,
                   //nextFocusNode: form.nodes[nodes[2]],
                 ),
               ),

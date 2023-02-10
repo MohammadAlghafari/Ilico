@@ -1,16 +1,20 @@
+import 'package:charja_charity/core/constants/end_point.dart';
+import 'package:charja_charity/core/utils/cashe_helper.dart';
 import 'package:charja_charity/features/activity/ui/activity_screen.dart';
-import 'package:charja_charity/features/explore/ui/explore_screen.dart';
 import 'package:charja_charity/features/inbox/ui/inbox_screen.dart';
 import 'package:charja_charity/features/profile/ui/my_profile_screen.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../features/add_section/ui/add_section.dart';
+import '../../../features/explore/ui/explore_screen.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_icons.dart';
 import '../../constants/app_styles.dart';
+import '../../utils/located_my_location.dart';
 import 'authorized_page.dart';
 
 class RootScreen extends StatefulWidget {
@@ -27,19 +31,15 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // SchedulerBinding.instance.addPostFrameCallback((_) {
-    //   LocatedMyLocation.determinePosition().then((value) async {
-    //     //    Navigation.pop();
-    //     showDialog(
-    //         barrierDismissible: false,
-    //         context: context,
-    //         builder: (context) {
-    //           return PopUpLocation(
-    //             position: value,
-    //           );
-    //         });
-    //   });
-    // });
+    // CashHelper.removeData(key: LATITUDE);
+    // CashHelper.removeData(key: LONGITUDE);
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (CashHelper.getData(key: LATITUDE) == null && CashHelper.getData(key: LONGITUDE) == null) {
+        LocatedMyLocation.determinePosition();
+      }
+      print("Latitude :${CashHelper.getData(key: LATITUDE)}");
+      print("Longitude :${CashHelper.getData(key: LONGITUDE)}");
+    });
 
     tabController = TabController(length: 5, vsync: this);
     super.initState();
@@ -147,7 +147,7 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
 
                           // row has two child icon and text
                           child: Row(
-                            children: [
+                            children: const [
                               Icon(Icons.chrome_reader_mode),
                               SizedBox(
                                 // sized box with width 10

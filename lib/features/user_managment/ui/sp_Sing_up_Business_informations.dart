@@ -2,18 +2,25 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:charja_charity/core/constants/app_icons.dart';
 import 'package:charja_charity/core/ui/widgets/loading.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../core/constants/end_point.dart';
 import '../../../core/ui/dialogs/dialogs.dart';
 import '../../../core/ui/widgets/Coustom_Button.dart';
 import '../../../core/ui/widgets/custom_text_field.dart';
 import '../../../core/utils/Navigation/Navigation.dart';
+import '../../../core/utils/cashe_helper.dart';
 import '../../../core/utils/form_utils/form_state_mixin.dart';
+import '../../../core/utils/validators/base_validator.dart';
+import '../../../core/utils/validators/length_validator.dart';
 import '../../profile/data/use_case/edit_company_service_provider.dart';
+import '../../search/data/repository/search_repository.dart';
+import '../../search/data/usecase/store_location_usecase.dart';
 import '../bloc/service_provider_cubit.dart';
 import '../data/model/supscription_model.dart';
 import '../widgets/sign_header_widget.dart';
@@ -76,7 +83,7 @@ class _SPSingUpBusinessInformationsState extends State<SPSingUpBusinessInformati
                       width: 34.w,
                     ),
                     Text(
-                      "Create your account",
+                      "Create your account".tr(),
                       style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                     ),
                   ],
@@ -115,11 +122,11 @@ class _SPSingUpBusinessInformationsState extends State<SPSingUpBusinessInformati
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "    Payment",
+                          "Payment".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "Business informations",
+                          "Business informations".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -151,27 +158,54 @@ class _SPSingUpBusinessInformationsState extends State<SPSingUpBusinessInformati
                       (index) => singleActivityWidget(controllerIndex: index, foucsnodeIndex: index + 1)),
                 ),
                 CustomTextField(
-                  labelText: 'Company’s name',
+                  labelText: 'Company’s name'.tr(),
                   labelStyle: AppTheme.bodyText2,
-                  hintText: 'distinctio error nesciunt',
+                  hintText: 'distinctio error nesciunt'.tr(),
                   textEditingController: form.controllers[widget.supscription.activityCount!],
                   focusNode: form.nodes[widget.supscription.activityCount!],
                   nextFocusNode: form.nodes[widget.supscription.activityCount! + 1],
+                  validator: (value) {
+                    return BaseValidator.validateValue(
+                      context,
+                      value!,
+                      [
+                        LengthValidator(length: 60),
+                      ],
+                    );
+                  },
                 ),
                 CustomTextField(
-                  labelText: 'Your job position',
+                  labelText: 'Your job position'.tr(),
                   labelStyle: AppTheme.bodyText2,
-                  hintText: 'distinctio error nesciunt  ',
+                  hintText: 'distinctio error nesciunt'.tr(),
                   textEditingController: form.controllers[widget.supscription.activityCount! + 1],
                   focusNode: form.nodes[widget.supscription.activityCount! + 1],
                   nextFocusNode: form.nodes[widget.supscription.activityCount! + 2],
+                  validator: (value) {
+                    return BaseValidator.validateValue(
+                      context,
+                      value!,
+                      [
+                        LengthValidator(length: 60),
+                      ],
+                    );
+                  },
                 ),
                 CustomTextField(
-                  labelText: 'SIREN number',
+                  labelText: 'SIREN number'.tr(),
                   labelStyle: AppTheme.bodyText2,
-                  hintText: 'distinctio error nesciunt',
+                  hintText: 'distinctio error nesciunt'.tr(),
                   textEditingController: form.controllers[widget.supscription.activityCount! + 2],
                   focusNode: form.nodes[widget.supscription.activityCount! + 2],
+                  validator: (value) {
+                    return BaseValidator.validateValue(
+                      context,
+                      value!,
+                      [
+                        LengthValidator(length: 9),
+                      ],
+                    );
+                  },
                   // nextFocusNode: form.nodes[5],
                   //useObscure: true,
                 ),
@@ -182,6 +216,12 @@ class _SPSingUpBusinessInformationsState extends State<SPSingUpBusinessInformati
                   bloc: cubit,
                   listener: (context, state) {
                     if (state is SPCategoryLoaded) {
+                      if (CashHelper.getData(key: LATITUDE) != null && CashHelper.getData(key: LONGITUDE) != null) {
+                        StoreLocationUseCase(SearchRepository()).call(
+                            params: StoreLocationParams(
+                                latitude: CashHelper.getData(key: LATITUDE),
+                                longitude: CashHelper.getData(key: LONGITUDE)));
+                      }
                       Navigation.push(const SignUpUploadPicture());
                     }
                   },
@@ -200,7 +240,7 @@ class _SPSingUpBusinessInformationsState extends State<SPSingUpBusinessInformati
                               function: () {
                                 if (categoriesID.contains(null)) {
                                   Dialogs.showSnackBar(
-                                      message: 'Please select all activity',
+                                      message: 'Please select all activity'.tr(),
                                       typeSnackBar: AnimatedSnackBarType.warning);
                                 } else {
                                   cubit.confirm(
@@ -243,9 +283,9 @@ class _SPSingUpBusinessInformationsState extends State<SPSingUpBusinessInformati
       },
       child: CustomTextField(
         enabled: false,
-        labelText: 'Select your Activity ${controllerIndex + 1}',
+        labelText: "${"Select your Activity".tr()}${controllerIndex + 1}",
         labelStyle: AppTheme.bodyText2,
-        hintText: 'Activity',
+        hintText: 'Activity'.tr(),
         textEditingController: form.controllers[controllerIndex],
         focusNode: form.nodes[controllerIndex],
         nextFocusNode: form.nodes[foucsnodeIndex],

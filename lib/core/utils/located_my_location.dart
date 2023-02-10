@@ -1,52 +1,64 @@
 import 'package:charja_charity/core/utils/Navigation/Navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 import '../ui/dialogs/locatedPermissionDialog.dart';
+import '../ui/dialogs/popup_Location.dart';
 import 'Keys.dart';
 
 class LocatedMyLocation {
-  static Future<Position> determinePosition() async {
+  static Future<void> determinePosition() async {
+    final Location location = Location();
     bool serviceEnabled;
-    LocationPermission permission;
+    // PermissionStatus permissionGranted;
+    // LocationData? locationData;
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    PermissionStatus hasPermissions = await location.hasPermission();
+    if (hasPermissions != PermissionStatus.granted || hasPermissions != PermissionStatus.grantedLimited) {
+      await location.requestPermission();
+    }
+    serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
-      //TODO add Locatied permisson popup
       showDialog(
           context: Keys.navigatorKey.currentState!.context,
           builder: (context) {
-            return LocatedPermissionDialog();
+            return LocatedPermissionDialog(
+              function: () async {
+                bool isEnabledLocation = await location.requestService();
+                // serviceEnabled = await Geolocator.isLocationServiceEnabled();
+                print("Location is enable:$isEnabledLocation");
+                if (isEnabledLocation) {
+                  Navigation.pop();
+
+                  showDialog(
+                      barrierDismissible: false,
+                      context: Keys.navigatorKey.currentState!.context,
+                      builder: (context) {
+                        return PopUpLocation(
+                            //  position: LatLng((locationData?.latitude)!, (locationData?.longitude)!),
+                            );
+                      });
+                  print("Location is enable");
+                  // Navigation.pop();
+                } else {
+                  //  Navigation.pop();
+                }
+              },
+            );
           });
-      Navigation.pop();
-      //return Future.error('Location services are disabled.');
+    } else {
+
+      showDialog(
+          barrierDismissible: false,
+          context: Keys.navigatorKey.currentState!.context,
+          builder: (context) {
+            return PopUpLocation(
+                //  position: LatLng((locationData?.latitude)!, (locationData?.longitude)!),
+                );
+          });
     }
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
-    // print(locationController.position[0].)
-
-    //return locationController.position;
   }
+  // return null;
+
 }

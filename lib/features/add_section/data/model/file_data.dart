@@ -36,18 +36,21 @@ class FileData extends BaseModel {
 class Data {
   String? url;
   String? key;
+  String? type;
 
   Data({this.url, this.key});
 
   Data.fromJson(Map<String, dynamic> json) {
     url = json['url'];
     key = json['key'];
+    type = json["type"];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['url'] = this.url;
     data['key'] = this.key;
+    data['type'] = this.type;
     return data;
   }
 }

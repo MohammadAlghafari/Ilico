@@ -4,6 +4,7 @@ import 'package:charja_charity/core/ui/onbording/onboarding_screen.dart';
 import 'package:charja_charity/core/ui/root_screen/root_screen.dart';
 import 'package:charja_charity/core/utils/Navigation/Navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../constants/end_point.dart';
 import '../../utils/cashe_helper.dart';
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Container(
       color: AppColors.kWhiteColor,
       child: Center(
-          child: Image.asset(
+          child: SvgPicture.asset(
         logo_dark,
       )),
     ));

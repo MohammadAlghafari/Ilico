@@ -4,15 +4,16 @@ import 'package:charja_charity/features/add_section/data/repository/add_section_
 import '../../../../core/params/base_params.dart';
 import '../../../../core/results/result.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../model/file_data.dart';
 
 class AddServiceParams extends BaseParams {
-  AddServiceParams({this.name, this.description, this.price, this.files, this.categoryId, this.type});
-
+  AddServiceParams(
+      {this.id, this.name, this.description, this.price, this.images, this.videos, this.categoryId, this.type});
+  String? id;
   String? name;
   String? description;
   double? price;
-  FileData? files;
+  List<String>? images = [];
+  List<String>? videos = [];
   String? categoryId;
   int? type;
 
@@ -20,9 +21,9 @@ class AddServiceParams extends BaseParams {
     return {
       "name": name?.trim() ?? " ",
       "description": description?.trim() ?? " ",
-      "price": price ?? " ",
-      "images": files?.data?.map((e) => e.url).toList() ?? [] /*?.where((element) => element.type == 1).toList()*/,
-      "videos": [] /*files?.where((element) => element.type == 2).toList()*/,
+      "price": price?.toDouble() ?? 0.0,
+      "images": images /*?.where((element) => element.type == 1).toList()*/,
+      "videos": videos /*files?.where((element) => element.type == 2).toList()*/,
       "categoryId": categoryId,
     };
   }

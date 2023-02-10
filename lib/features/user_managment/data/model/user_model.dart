@@ -1,20 +1,21 @@
 import 'package:charja_charity/core/data_source/model.dart';
 
 import '../../../../core/responses/ApiResponse.dart';
+import '../../../profile/data/model/profile_model.dart';
 
 class UserInfoResponse extends ApiResponse<UserModel> {
-  UserInfoResponse(
-      {required super.errors, required super.success, required super.data});
+  UserInfoResponse({required super.errors, required super.success, required super.data});
 
   factory UserInfoResponse.fromJson(Map<String, dynamic> json) {
-    return UserInfoResponse(
-        errors: json['message'],
-        success: json['success'],
-        data: UserModel.fromJson(json['data']));
+    return UserInfoResponse(errors: json['message'], success: json['success'], data: UserModel.fromJson(json['data']));
   }
 }
 
 class UserModel extends BaseModel {
+  String? accessToken;
+  String? accessTokenExpirationDate;
+  String? refreshToken;
+  String? refreshTokenExpirationDate;
   String? id;
   String? email;
   String? name;
@@ -39,12 +40,18 @@ class UserModel extends BaseModel {
   String? createdAt;
   String? updatedAt;
   String? userType;
+  ChatUserModel? chatUserModel;
 
   UserModel(
       {this.id,
       this.email,
       this.name,
       this.dob,
+      this.chatUserModel,
+      this.accessToken,
+      this.accessTokenExpirationDate,
+      this.refreshTokenExpirationDate,
+      this.refreshToken,
       this.userType,
       this.gender,
       this.postalCode,
@@ -67,6 +74,10 @@ class UserModel extends BaseModel {
       this.updatedAt});
 
   UserModel.fromJson(Map<String, dynamic> json) {
+    refreshToken = json["refreshToken"];
+    refreshTokenExpirationDate = json["refreshTokenExpirationDate"];
+    accessTokenExpirationDate = json["accessTokenExpirationDate"];
+    accessToken = json["accessToken"];
     id = json['id'];
     email = json['email'];
     name = json['name'];
@@ -81,23 +92,35 @@ class UserModel extends BaseModel {
     userStatus = json['userStatus'];
     isVerified = json['isVerified'];
     userType = json['userType'];
-    customer = json['customer'] != null
-        ? new Influencer.fromJson(json['customer'])
-        : null;
-    influencer = json['influencer'] != null
-        ? new Influencer.fromJson(json['influencer'])
-        : null;
-    serviceProvider = json['serviceProvider'] != null
-        ? new ServiceProvider.fromJson(json['serviceProvider'])
-        : null;
-    admin =
-        json['admin'] != null ? new Influencer.fromJson(json['admin']) : null;
+    customer = json['customer'] != null ? new Influencer.fromJson(json['customer']) : null;
+    influencer = json['influencer'] != null ? new Influencer.fromJson(json['influencer']) : null;
+    serviceProvider = json['serviceProvider'] != null ? new ServiceProvider.fromJson(json['serviceProvider']) : null;
+    admin = json['admin'] != null ? new Influencer.fromJson(json['admin']) : null;
     hashRefreshToken = json['hashRefreshToken'];
     webFcmToken = json['webFcmToken'];
     mobileFcmToken = json['mobileFcmToken'];
     lastLogin = json['lastLogin'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    if (json['userChat'] != null) {
+      chatUserModel = ChatUserModel.formJson(json['userChat']);
+    }
+  }
+}
+
+class ChatUserModel {
+  int? id;
+  String? password;
+  String? login;
+  String? customData;
+
+  ChatUserModel({this.id, this.password, this.login, this.customData});
+
+  ChatUserModel.formJson(Map<String, dynamic> json) {
+    id = json['id'];
+    password = json['password'];
+    login = json['login'];
+    customData = json['customData'];
   }
 }
 
@@ -108,44 +131,35 @@ class Customer {
   Null? photoUrl;
   String? userStatus;
 
-  Customer(
-      {this.id,
-      this.generalInformation,
-      this.address,
-      this.photoUrl,
-      this.userStatus});
+  Customer({this.id, this.generalInformation, this.address, this.photoUrl, this.userStatus});
 
   Customer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    generalInformation = json['generalInformation'] != null
-        ? new GeneralInformation.fromJson(json['generalInformation'])
-        : null;
-    address = json['address'] != null
-        ? new GeneralInformation.fromJson(json['address'])
-        : null;
+    generalInformation =
+        json['generalInformation'] != null ? new GeneralInformation.fromJson(json['generalInformation']) : null;
+    address = json['address'] != null ? new GeneralInformation.fromJson(json['address']) : null;
     photoUrl = json['photoUrl'];
     userStatus = json['userStatus'];
   }
 }
 
-class GeneralInformation {
-  String? email;
-  String? name;
-  Null? dob;
-  Null? gender;
-  String? phoneNumber;
-
-  GeneralInformation(
-      {this.email, this.name, this.dob, this.gender, this.phoneNumber});
-
-  GeneralInformation.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    name = json['name'];
-    dob = json['dob'];
-    gender = json['gender'];
-    phoneNumber = json['phoneNumber'];
-  }
-}
+// class GeneralInformation {
+//   String? email;
+//   String? name;
+//   Null? dob;
+//   Null? gender;
+//   String? phoneNumber;
+//
+//   GeneralInformation({this.email, this.name, this.dob, this.gender, this.phoneNumber});
+//
+//   GeneralInformation.fromJson(Map<String, dynamic> json) {
+//     email = json['email'];
+//     name = json['name'];
+//     dob = json['dob'];
+//     gender = json['gender'];
+//     phoneNumber = json['phoneNumber'];
+//   }
+// }
 
 class Address {
   Null? address;
@@ -168,12 +182,9 @@ class Influencer {
   Influencer({this.generalInformation, this.address});
 
   Influencer.fromJson(Map<String, dynamic> json) {
-    generalInformation = json['generalInformation'] != null
-        ? new GeneralInformation.fromJson(json['generalInformation'])
-        : null;
-    address = json['address'] != null
-        ? new GeneralInformation.fromJson(json['address'])
-        : null;
+    generalInformation =
+        json['generalInformation'] != null ? new GeneralInformation.fromJson(json['generalInformation']) : null;
+    address = json['address'] != null ? new GeneralInformation.fromJson(json['address']) : null;
   }
 }
 
@@ -185,14 +196,9 @@ class ServiceProvider {
   ServiceProvider({this.generalInformation, this.address, this.customer});
 
   ServiceProvider.fromJson(Map<String, dynamic> json) {
-    generalInformation = json['generalInformation'] != null
-        ? new GeneralInformation.fromJson(json['generalInformation'])
-        : null;
-    address = json['address'] != null
-        ? new GeneralInformation.fromJson(json['address'])
-        : null;
-    customer = json['customer'] != null
-        ? new Influencer.fromJson(json['customer'])
-        : null;
+    generalInformation =
+        json['generalInformation'] != null ? new GeneralInformation.fromJson(json['generalInformation']) : null;
+    address = json['address'] != null ? new GeneralInformation.fromJson(json['address']) : null;
+    customer = json['customer'] != null ? new Influencer.fromJson(json['customer']) : null;
   }
 }

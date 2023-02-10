@@ -1,12 +1,22 @@
-import 'package:charja_charity/core/boilerplate/pagination/models/get_list_request.dart';
 import 'package:charja_charity/core/errors/http_error.dart';
 import 'package:charja_charity/core/results/result.dart';
-import 'package:charja_charity/features/profile/data/model/get_product_model.dart';
+import 'package:charja_charity/features/add_section/data/model/addEvent_model.dart';
+import 'package:charja_charity/features/add_section/data/model/new_service.dart';
+import 'package:charja_charity/features/profile/data/model/SPEventModel.dart';
+import 'package:charja_charity/features/profile/data/model/SPProductsModel.dart';
+import 'package:charja_charity/features/profile/data/model/SPServiceModel.dart';
+import 'package:charja_charity/features/profile/data/model/delete_account_model.dart';
 import 'package:charja_charity/features/profile/data/model/profile_model.dart';
+import 'package:charja_charity/features/profile/data/model/sp_general_information_model.dart';
 import 'package:charja_charity/features/profile/data/profile_repository/profile_repository.dart';
-import 'package:charja_charity/features/profile/data/use_case/get_product_usecase.dart';
+import 'package:charja_charity/features/profile/data/queries.dart';
+import 'package:charja_charity/features/profile/data/use_case/delete_account_usecase.dart';
 import 'package:charja_charity/features/profile/data/use_case/profile_usecase.dart';
 import 'package:charja_charity/features/profile/data/use_case/social_data_usecase.dart';
+import 'package:charja_charity/features/profile/data/use_case/sp_general_information_usecase.dart';
+import 'package:charja_charity/features/profile/data/use_case/sp_get_event_usecase.dart';
+import 'package:charja_charity/features/profile/data/use_case/sp_get_products_usecase.dart';
+import 'package:charja_charity/features/profile/data/use_case/sp_get_services_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -91,11 +101,34 @@ void main() {
       twitterFollowers: 50,
       snapchatUrl: "https//",
       snapchatFollowers: 50);
-  GetproductModel getproductModel = GetproductModel(
-      price: 10, categoryId: "test", description: "test", name: "test", images: ['url'], videos: ['url']);
-  List<GetproductModel> services = [getproductModel, getproductModel, getproductModel];
-  GetListRequest request = GetListRequest(limit: 20, order: "asc", page: 1);
-  GetProductParams getProductParams = GetProductParams(request: request, type: 'getService');
+
+  Activities activities = Activities(id: "123", name: "name", description: "des", isSelected: false, isActive: true);
+  Company company = Company(description: "des", name: "name", id: "123", phoneNumber: "+963123456789");
+  SPGeneralInformationModel spGeneralInformationModel = SPGeneralInformationModel(
+      photoUrl: " image",
+      activities: [activities, activities, activities],
+      company: company,
+      generalInformation: generalInformation);
+  // Address address = Address(address: 'address', cityId: '10', postalCode: '965482');
+  SPGeneralInformationParams paramsUser = SPGeneralInformationParams(
+      id: "id", query: getServiceProviderGeneralInfoByIDQueriesUser, latitude: 33.32222, longitude: 36.32523);
+
+  AddEventModel addEventModel = AddEventModel(name: "test", description: "test", images: [], videos: []);
+  SPEvent spEvent = SPEvent(event: [addEventModel, addEventModel, addEventModel]);
+  SPGetEventParams spGetEventParamsUser =
+      SPGetEventParams(id: "id", query: getEventByServiceProvideIdQueriesUser, latitude: 33.2323, longitude: 36.36362);
+
+  AddService addService = AddService(id: "sdd", videos: [], images: [], description: "des", name: "name");
+  SPProduct spProduct = SPProduct(products: [addService, addService, addService]);
+  SPGetProductsParams spGetProductsParamsUser = SPGetProductsParams(
+      id: "id", query: getProductsByServiceProvideIdQueriesUser, latitude: 33.2323, longitude: 36.36362);
+
+  SPService spService = SPService(services: [addService, addService, addService]);
+  SPGetServicesParams SPGetServicesParamsUser = SPGetServicesParams(
+      id: "id", query: getServiceProviderGeneralInfoByIDQueriesUser, latitude: 33.2323, longitude: 36.36362);
+
+  DeleteAccountModel deleteAccountModel = DeleteAccountModel(message: "test");
+  DeleteAccountParams deleteAccountParams = DeleteAccountParams(password: "1321233215@Aa");
   HttpError error = const HttpError(message: ['Http error']);
 
   test('Success customer profile', () async {
@@ -180,24 +213,111 @@ void main() {
     verify(profileRepository!.update_social_media_data(params: params));
   });
 
-  test('Success get service,', () async {
-    when(profileRepository?.getProduct(params: getProductParams)).thenAnswer((_) async => PaginatedResult(
-          data: services,
-        ));
-    final result = await profileRepository!.getProduct(params: getProductParams);
+  test('Success delete account,', () async {
+    when(profileRepository?.deleteAccount(params: deleteAccountParams))
+        .thenAnswer((_) async => Result<DeleteAccountModel>(
+              data: deleteAccountModel,
+            ));
+    final result = await profileRepository!.deleteAccount(params: deleteAccountParams);
 
     expect(result.hasDataOnly, true);
-    expect(result.data, services);
-    verify(profileRepository?.getProduct(params: getProductParams));
+    expect(result.data, deleteAccountModel);
+    verify(profileRepository?.deleteAccount(params: deleteAccountParams));
   });
-  test('fail get service', () async {
-    when(profileRepository?.getProduct(params: getProductParams))
-        .thenAnswer((_) async => PaginatedResult(error: error));
-    final result = await profileRepository!.getProduct(params: getProductParams);
+  test('fail delete account', () async {
+    when(profileRepository?.deleteAccount(params: deleteAccountParams))
+        .thenAnswer((_) async => Result<DeleteAccountModel>(error: error));
+    final result = await profileRepository!.deleteAccount(params: deleteAccountParams);
 
     expect(result.hasErrorOnly, true);
     expect(result.hasDataOnly, false);
     expect(result.error, error);
-    verify(profileRepository!.getProduct(params: getProductParams));
+    verify(profileRepository!.deleteAccount(params: deleteAccountParams));
+  });
+//general information
+  test('Success get general information,', () async {
+    when(profileRepository?.get_ServiceProviderByID(params: paramsUser))
+        .thenAnswer((_) async => Result<SPGeneralInformationModel>(
+              data: spGeneralInformationModel,
+            ));
+    final result = await profileRepository!.get_ServiceProviderByID(params: paramsUser);
+
+    expect(result.hasDataOnly, true);
+    expect(result.data, spGeneralInformationModel);
+    verify(profileRepository?.get_ServiceProviderByID(params: paramsUser));
+  });
+  test('fail get general information', () async {
+    when(profileRepository?.get_ServiceProviderByID(params: paramsUser))
+        .thenAnswer((_) async => Result<SPGeneralInformationModel>(error: error));
+    final result = await profileRepository!.get_ServiceProviderByID(params: paramsUser);
+
+    expect(result.hasErrorOnly, true);
+    expect(result.hasDataOnly, false);
+    expect(result.error, error);
+    verify(profileRepository!.get_ServiceProviderByID(params: paramsUser));
+  });
+
+  //get events
+  test('Success get events,', () async {
+    when(profileRepository?.getEventById(params: spGetEventParamsUser)).thenAnswer((_) async => Result<SPEvent>(
+          data: spEvent,
+        ));
+    final result = await profileRepository!.getEventById(params: spGetEventParamsUser);
+
+    expect(result.hasDataOnly, true);
+    expect(result.data, spEvent);
+    verify(profileRepository?.getEventById(params: spGetEventParamsUser));
+  });
+  test('fail get events', () async {
+    when(profileRepository?.getEventById(params: spGetEventParamsUser))
+        .thenAnswer((_) async => Result<SPEvent>(error: error));
+    final result = await profileRepository!.getEventById(params: spGetEventParamsUser);
+
+    expect(result.hasErrorOnly, true);
+    expect(result.hasDataOnly, false);
+    expect(result.error, error);
+    verify(profileRepository!.getEventById(params: spGetEventParamsUser));
+  });
+  //get services
+  test('Success get services,', () async {
+    when(profileRepository?.getServicesById(params: SPGetServicesParamsUser)).thenAnswer((_) async => Result<SPService>(
+          data: spService,
+        ));
+    final result = await profileRepository!.getServicesById(params: SPGetServicesParamsUser);
+
+    expect(result.hasDataOnly, true);
+    expect(result.data, spService);
+    verify(profileRepository?.getServicesById(params: SPGetServicesParamsUser));
+  });
+  test('fail get services', () async {
+    when(profileRepository?.getServicesById(params: SPGetServicesParamsUser))
+        .thenAnswer((_) async => Result<SPService>(error: error));
+    final result = await profileRepository!.getServicesById(params: SPGetServicesParamsUser);
+
+    expect(result.hasErrorOnly, true);
+    expect(result.hasDataOnly, false);
+    expect(result.error, error);
+    verify(profileRepository!.getServicesById(params: SPGetServicesParamsUser));
+  });
+  //get products
+  test('Success get products,', () async {
+    when(profileRepository?.getProductsById(params: spGetProductsParamsUser)).thenAnswer((_) async => Result<SPProduct>(
+          data: spProduct,
+        ));
+    final result = await profileRepository!.getProductsById(params: spGetProductsParamsUser);
+
+    expect(result.hasDataOnly, true);
+    expect(result.data, spProduct);
+    verify(profileRepository?.getProductsById(params: spGetProductsParamsUser));
+  });
+  test('fail get products', () async {
+    when(profileRepository?.getProductsById(params: spGetProductsParamsUser))
+        .thenAnswer((_) async => Result<SPProduct>(error: error));
+    final result = await profileRepository!.getProductsById(params: spGetProductsParamsUser);
+
+    expect(result.hasErrorOnly, true);
+    expect(result.hasDataOnly, false);
+    expect(result.error, error);
+    verify(profileRepository!.getProductsById(params: spGetProductsParamsUser));
   });
 }

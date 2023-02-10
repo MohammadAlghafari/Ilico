@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,12 +16,14 @@ class PreviewImageOrVideosWidget extends StatefulWidget {
     required this.Type,
     required this.previewImage,
     required this.deleteImage,
+    required this.imageType,
   }) : super(key: key);
 
-  final File image;
+  final String image;
   final int Type;
   final Function previewImage;
   final Function deleteImage;
+  final String imageType;
 
   @override
   State<PreviewImageOrVideosWidget> createState() => _PreviewImageOrVideosWidgetState();
@@ -29,15 +32,44 @@ class PreviewImageOrVideosWidget extends StatefulWidget {
 class _PreviewImageOrVideosWidgetState extends State<PreviewImageOrVideosWidget> {
   bool? isVisibil = true;
 
+  // late File imageSelected;
   late VideoPlayerController _controller;
+  bool _isPlaying = false;
 
   @override
   void initState() {
+    // TODO: implement initState
+    //imageSelected = widget.image;
     if (widget.Type == 2) {
-      _controller = VideoPlayerController.file(widget.image)
-        ..initialize().then((_) {
-          setState(() {});
-        });
+      if (widget.imageType == "file") {
+        _controller = VideoPlayerController.file(File(widget.image))
+          ..addListener(() {
+            final bool isPlaying = _controller.value.isPlaying;
+            if (isPlaying != _isPlaying) {
+              setState(() {
+                _isPlaying = isPlaying;
+              });
+            }
+          })
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            setState(() {});
+          });
+      } else if (widget.imageType == "network") {
+        _controller = VideoPlayerController.network(widget.image)
+          ..addListener(() {
+            final bool isPlaying = _controller.value.isPlaying;
+            if (isPlaying != _isPlaying) {
+              setState(() {
+                _isPlaying = isPlaying;
+              });
+            }
+          })
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            setState(() {});
+          });
+      }
     }
     super.initState();
   }
@@ -50,13 +82,16 @@ class _PreviewImageOrVideosWidgetState extends State<PreviewImageOrVideosWidget>
   @override
   void dispose() {
     // TODO: implement dispose
-
+    if (widget.Type == 2) {
+      _controller.dispose();
+    }
+    //_controller=null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.image.path);
+    //print(widget.image.path);
     return InkWell(
       onLongPress: () {
         setState(() {
@@ -76,11 +111,16 @@ class _PreviewImageOrVideosWidgetState extends State<PreviewImageOrVideosWidget>
               children: [
                 widget.Type != 0
                     ? widget.Type == 1
-                        ? Image.file(
-                            widget.image,
-                            fit: BoxFit.fill,
-                            // opacity: const AlwaysStoppedAnimation(.5),
-                          )
+                        ? widget.imageType == "network"
+                            ? Image.network(
+                                widget.image,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.file(
+                                File(widget.image),
+                                fit: BoxFit.contain,
+                                // opacity: const AlwaysStoppedAnimation(.5),
+                              )
                         : _controller.value.isInitialized
                             ? AspectRatio(
                                 aspectRatio: _controller.value.aspectRatio,
@@ -102,12 +142,18 @@ class _PreviewImageOrVideosWidgetState extends State<PreviewImageOrVideosWidget>
                     children: [
                       InkWell(
                         child: SvgPicture.asset(preview),
-                        onTap: () => widget.previewImage.call(),
+                        onTap: () {
+                          widget.previewImage.call();
+                          isVisibil = true;
+                          setState(() {});
+                        },
                       ),
                       InkWell(
                         child: SvgPicture.asset(delete),
                         onTap: () {
                           widget.deleteImage.call();
+                          isVisibil = true;
+                          setState(() {});
                         },
                       ),
                     ],
@@ -115,39 +161,42 @@ class _PreviewImageOrVideosWidgetState extends State<PreviewImageOrVideosWidget>
                 )
               ],
             ),
-            child: widget.Type != 0
-                ? widget.Type == 1
-                    ? Image.file(
+            child: widget.Type == 1
+                ? widget.imageType == "network"
+                    ? Image.network(
                         widget.image,
+                        fit: BoxFit.fill,
+                      )
+                    : Image.file(
+                        File(widget.image),
                         fit: BoxFit.fill,
                         // opacity: const AlwaysStoppedAnimation(.5),
                       )
-                    : _controller.value.isInitialized
-                        ? Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              AspectRatio(
-                                aspectRatio: _controller.value.aspectRatio,
-                                child: VideoPlayer(_controller),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  if (_controller.value.isPlaying) {
-                                    _controller.pause();
-                                  } else {
-                                    _controller.play();
-                                  }
-                                  setState(() {});
-                                },
-                                child: Icon(
-                                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                                  color: AppColors.kWhiteColor,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container()
-                : Container(),
+                : _controller.value.isInitialized
+                    ? Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (_isPlaying) {
+                                _controller.pause();
+                              } else {
+                                _controller.play();
+                              }
+                              setState(() {});
+                            },
+                            child: Icon(
+                              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                              color: AppColors.kWhiteColor,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
           ),
         ),
       ),

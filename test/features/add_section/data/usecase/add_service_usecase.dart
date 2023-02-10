@@ -1,6 +1,7 @@
 import 'package:charja_charity/core/errors/http_error.dart';
 import 'package:charja_charity/core/results/result.dart';
 import 'package:charja_charity/features/add_section/data/model/file_data.dart';
+import 'package:charja_charity/features/add_section/data/model/get_product_model.dart';
 import 'package:charja_charity/features/add_section/data/model/new_service.dart';
 import 'package:charja_charity/features/add_section/data/repository/add_section_repostory.dart';
 import 'package:charja_charity/features/add_section/data/usecase/add_service_usecase.dart';
@@ -23,9 +24,10 @@ void main() {
   List<Data> dataList = [data, data];
   FileData filedata = FileData(data: dataList);
   AddServiceParams addServiceParams =
-      AddServiceParams(name: "test", description: "test", categoryId: "test", price: 10.5, files: filedata);
+      AddServiceParams(name: "test", description: "test", categoryId: "test", price: 10.5);
+  Category category = Category(name: "test", id: "sdsds", description: "sfafaf", isActive: true);
   AddService addService =
-      AddService(price: 10, categoryId: "test", description: "test", name: "test", images: ['url'], videos: ['url']);
+      AddService(price: 10, category: category, description: "test", name: "test", images: ['url'], videos: ['url']);
   HttpError error = const HttpError(message: ['Http error']);
   test('Success add service,product,event usecase', () async {
     when(addSectionRepostory?.addService(params: addServiceParams)).thenAnswer((_) async => RemoteResult(

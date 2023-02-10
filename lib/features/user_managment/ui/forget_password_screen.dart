@@ -1,4 +1,5 @@
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,7 +59,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with FormStateMinxin {
                                   ),
                                 ),
                                 Text(
-                                  'Forgot your password?',
+                                  'Forgot your password?'.tr(),
                                   style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                                 ),
                               ],
@@ -78,7 +79,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with FormStateMinxin {
                         Container(
                           width: 208.w,
                           child: Text(
-                            'Please enter your registered email below to receive password reset instruction',
+                            'Please enter your registered email below to receive password reset instruction'.tr(),
                             style: AppTheme.bodyText1.copyWith(fontSize: 12, color: AppColors.kDimBlue),
                             maxLines: 2,
                           ),
@@ -103,8 +104,8 @@ class _ForgetPasswordState extends State<ForgetPassword> with FormStateMinxin {
                               },
                               focusNode: form.nodes[0],
                               textEditingController: form.controllers[0],
-                              hintText: 'Enter your email',
-                              labelText: 'Email',
+                              hintText: 'Enter your email'.tr(),
+                              labelText: 'Email'.tr(),
                               labelStyle: AppTheme.subtitle2.copyWith(fontSize: 14),
                             ),
                           ),
@@ -126,7 +127,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with FormStateMinxin {
               onSuccess: (val) {
                 CustomSheet.show(
                     isDismissible: false,
-                    title: "Verify Mobile Number",
+                    title: "Verify Mobile Number".tr(),
                     context: context,
                     child: VerfiyCodeForgetPassword(
                       email: form.controllers[0].text,
@@ -143,7 +144,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with FormStateMinxin {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 27.w),
                       child: CoustomButton(
-                        buttonName: "Submit",
+                        buttonName: "Submit".tr(),
                         backgoundColor: AppColors.kWhiteColor,
                         borderSideColor: AppColors.kPDarkBlueColor,
                         borderRadius: 10.0.r,

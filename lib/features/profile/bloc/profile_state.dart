@@ -17,3 +17,13 @@ class EditProfileError extends ProfileState {
   final BaseError? error;
   final VoidCallback? callback;
 }
+
+class IsAvaliableLoading extends ProfileState {}
+
+class IsAvaliableSuccess extends ProfileState {}
+
+class IsAvaliableError extends ProfileState {
+  IsAvaliableError({this.error, this.callback});
+  final BaseError? error;
+  final VoidCallback? callback;
+}

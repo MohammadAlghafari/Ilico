@@ -1,6 +1,7 @@
 import 'package:charja_charity/core/boilerplate/create_model/widgets/create_model.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
 import 'package:charja_charity/features/profile/data/model/profile_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -47,9 +48,9 @@ class _CompanyWidgetState extends State<CompanyWidget> with FormStateMinxin {
                 );
               },
               initialValue: widget.profileModel.companyModel?.job,
-              labelText: 'Job',
+              labelText: 'Job'.tr(),
               labelStyle: AppTheme.bodyText2,
-              hintText: 'Hairdresser',
+              hintText: 'Add job name'.tr(),
               textEditingController: form.controllers[0],
               focusNode: form.nodes[0],
               nextFocusNode: form.nodes[1],
@@ -65,16 +66,16 @@ class _CompanyWidgetState extends State<CompanyWidget> with FormStateMinxin {
                 );
               },
               initialValue: widget.profileModel.companyModel?.name,
-              labelText: 'Company name',
+              labelText: 'Company name'.tr(),
               labelStyle: AppTheme.bodyText2,
-              hintText: 'Hairsalon',
+              hintText: 'Add company name'.tr(),
               textEditingController: form.controllers[1],
               focusNode: form.nodes[1],
               nextFocusNode: form.nodes[2],
             ),
             CustomTextField(
               initialValue: widget.profileModel.companyModel?.phoneNumber,
-              labelText: 'Company number',
+              labelText: 'Company number'.tr(),
               labelStyle: AppTheme.bodyText2,
               hintText: '+32   06 00 00 00 00',
               textEditingController: form.controllers[2],
@@ -84,9 +85,9 @@ class _CompanyWidgetState extends State<CompanyWidget> with FormStateMinxin {
             ),
             CustomTextField(
               initialValue: widget.profileModel.companyModel?.iban,
-              labelText: 'Company IBAN',
+              labelText: 'Company IBAN'.tr(),
               labelStyle: AppTheme.bodyText2,
-              hintText: '2658562254',
+              hintText: 'Add company IBAN'.tr(),
               textEditingController: form.controllers[3],
               focusNode: form.nodes[3],
               nextFocusNode: form.nodes[4],
@@ -104,9 +105,9 @@ class _CompanyWidgetState extends State<CompanyWidget> with FormStateMinxin {
                 );
               },
               initialValue: widget.profileModel.companyModel?.description,
-              labelText: 'Description',
+              labelText: 'Description'.tr(),
               labelStyle: AppTheme.bodyText2,
-              hintText: 'Type service description here...',
+              hintText: 'Type service description here...'.tr(),
               textEditingController: form.controllers[4],
               focusNode: form.nodes[4],
               maxLine: 5,
@@ -140,7 +141,7 @@ class _CompanyWidgetState extends State<CompanyWidget> with FormStateMinxin {
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 20.h),
                       child: CoustomButton(
-                        buttonName: "Save",
+                        buttonName: "Save".tr(),
                         // height: 50,
                         // width: 336,
                         backgoundColor: AppColors.kWhiteColor,

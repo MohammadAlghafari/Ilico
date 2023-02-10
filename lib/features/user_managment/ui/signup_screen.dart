@@ -1,18 +1,26 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:charja_charity/core/boilerplate/create_model/widgets/create_model.dart';
 import 'package:charja_charity/core/constants/app_colors.dart';
 import 'package:charja_charity/core/constants/app_icons.dart';
 import 'package:charja_charity/core/constants/app_styles.dart';
 import 'package:charja_charity/core/ui/widgets/Coustom_Button.dart';
 import 'package:charja_charity/core/ui/widgets/sheet/coustom_sheet.dart';
+import 'package:charja_charity/core/utils/cashe_helper.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
 import 'package:charja_charity/core/utils/form_utils/form_state_mixin.dart';
 import 'package:charja_charity/core/utils/validators/email_validator.dart';
 import 'package:charja_charity/core/utils/validators/password_validator.dart';
 import 'package:charja_charity/features/user_managment/data/model/user_model.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
+import '../../../core/constants/end_point.dart';
+import '../../../core/ui/dialogs/dialogs.dart';
 import '../../../core/ui/widgets/custom_text_field.dart';
 import '../../../core/ui/widgets/verfication_Bottom_Sheet.dart';
 import '../../../core/utils/Navigation/Navigation.dart';
@@ -42,11 +50,7 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
   @override
   void initState() {
     super.initState();
-    item = [
-      buildIndividualPage(),
-      buildInfluencerPage(),
-      buildProfessionalPage()
-    ];
+    item = [buildIndividualPage(), buildInfluencerPage(), buildProfessionalPage()];
   }
 
   @override
@@ -65,9 +69,8 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "Create your account as",
-                    style: AppTheme.headline2
-                        .copyWith(color: AppColors.kWhiteColor),
+                    "Create your account as".tr(),
+                    style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                   ),
                   SizedBox(
                     height: 26.h,
@@ -96,7 +99,9 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
                       ? item[1]
                       : item[2],
               selectedIndex != 2
-                  ? const SignInWidget(
+                  ? SignInWidget(
+                      isCustomer: switch_to_customer,
+                      roleKey: roleKey,
                       fromLogin: false,
                     )
                   : Container(
@@ -124,7 +129,7 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
                                 },
                               ),
                               Text(
-                                "Allow to switch to customer account",
+                                "Allow to switch to customer account".tr(),
                                 style: AppTheme.headline5,
                               )
                             ],
@@ -133,10 +138,10 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
                             height: 10.h,
                           ),
                           Text(
-                            "If you activate this option, you will have access to an user account. You can switch to your professional account anytime.",
-                            style: AppTheme.subtitle1.copyWith(
-                                color: AppColors.kGrayTextField,
-                                fontWeight: FontWeight.w300),
+                            "If you activate this option, you will have access to an user account. You can switch to your professional account anytime."
+                                .tr(),
+                            style: AppTheme.subtitle1
+                                .copyWith(color: AppColors.kGrayTextField, fontWeight: FontWeight.w300),
                           )
                         ],
                       ),
@@ -146,17 +151,40 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
               ),
               CreateModel(
                 onSuccess: (UserModel result) {
+                  CubeUser user = CubeUser(
+                      id: result.chatUserModel!.id,
+                      password: result.chatUserModel!.password,
+                      login: result.chatUserModel!.login,
+                      customData: result.chatUserModel!.customData);
                   if (result.isVerified != null && result.isVerified == false) {
+                    CashHelper.cashChatUser(user);
+                    createSession(user).then((cubeSession) async {
+                      debugPrint("createSession cubeSession: $cubeSession");
+
+                      CubeChatConnection.instance.login(user).then((loggedUser) {
+                        debugPrint("User logged in $loggedUser");
+                      }).catchError((error) {
+                        debugPrint("log in error $error");
+                      });
+                    }).catchError((error) {
+                      print("create session error $error");
+                    });
                     CustomSheet.show(
                         isDismissible: false,
-                        title: "Verify Mobile Number",
+                        title: "Verify Mobile Number".tr(),
                         context: context,
                         child: VerficationBottomSheet(
                           phoneNumber: form.controllers[2].text,
                         ));
                   } else if (result.userType == "ServiceProvider") {
                     if (result.userStatus == "InActive") {
-                      Navigation.push(SpSingUpSubscriptions());
+                      if (CashHelper.getData(key: kACCESSTOKEN) == null) {
+                        Dialogs.showSnackBar(
+                            message: 'User is already exist, go to log in pleas.',
+                            typeSnackBar: AnimatedSnackBarType.error);
+                      } else {
+                        Navigation.push(SpSingUpSubscriptions());
+                      }
                     }
                   }
                 },
@@ -182,7 +210,7 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 20.h),
                         child: CoustomButton(
-                          buttonName: "Create account",
+                          buttonName: "Create account".tr(),
                           // height: 50,
                           // width: 336,
                           backgoundColor: AppColors.kWhiteColor,
@@ -236,9 +264,9 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
         // physics: const NeverScrollableScrollPhysics(),
         children: [
           CustomTextField(
-            labelText: 'First Name',
+            labelText: 'First Name'.tr(),
             labelStyle: AppTheme.bodyText2,
-            hintText: 'Enter your name',
+            hintText: 'Enter your name'.tr(),
             textEditingController: form.controllers[0],
             focusNode: form.nodes[0],
             nextFocusNode: form.nodes[1],
@@ -252,9 +280,9 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
             ),
           ),
           CustomTextField(
-            labelText: 'Last Name',
+            labelText: 'Last Name'.tr(),
             labelStyle: AppTheme.bodyText2,
-            hintText: 'Enter your name',
+            hintText: 'Enter your name'.tr(),
             textEditingController: form.controllers[1],
             focusNode: form.nodes[1],
             nextFocusNode: form.nodes[2],
@@ -268,7 +296,7 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
             ),
           ),
           CustomTextField(
-            labelText: 'Phone number',
+            labelText: 'Phone number'.tr(),
             labelStyle: AppTheme.bodyText2,
             hintText: '+32   00 00 00 00 00',
             textEditingController: form.controllers[2],
@@ -282,7 +310,7 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
             ),
           ),
           CustomTextField(
-            labelText: 'Email',
+            labelText: 'Email'.tr(),
             labelStyle: AppTheme.bodyText2,
             hintText: 'Enter your Email',
             textEditingController: form.controllers[3],
@@ -296,9 +324,9 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
           ),
           CustomTextField(
             isSuffixIcon: true,
-            labelText: 'Password',
+            labelText: 'Password'.tr(),
             labelStyle: AppTheme.bodyText2,
-            hintText: 'Enter your Password',
+            hintText: 'Enter your Password'.tr(),
             textEditingController: form.controllers[4],
             focusNode: form.nodes[4],
             useObscure: true,
@@ -314,12 +342,13 @@ class _SignupScreenState extends State<SignupScreen> with FormStateMinxin {
     );
   }
 
-  Widget buildAccountSelected(String imageSelected, String imageUnSelected,
-      VoidCallback action, int indexSelected) {
+  Widget buildAccountSelected(String imageSelected, String imageUnSelected, VoidCallback action, int indexSelected) {
     return InkWell(
         onTap: action,
-        child: Image.asset(
-            indexSelected == selectedIndex ? imageSelected : imageUnSelected));
+        child: Container(
+            height: 92.h,
+            width: 92.h,
+            child: SvgPicture.asset(indexSelected == selectedIndex ? imageSelected : imageUnSelected)));
   }
 
   Widget buildListAccountItem() {

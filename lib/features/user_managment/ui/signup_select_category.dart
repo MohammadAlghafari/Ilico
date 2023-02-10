@@ -2,6 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:charja_charity/core/constants/app_colors.dart';
 import 'package:charja_charity/core/constants/app_styles.dart';
 import 'package:charja_charity/features/user_managment/ui/sing_up_Social_Networks.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -65,7 +66,7 @@ class _SignupSelectCategoryState extends State<SignupSelectCategory> {
                             width: 18.w,
                           ),
                           Text(
-                            'Create your account',
+                            'Create your account'.tr(),
                             style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                           ),
                         ],
@@ -93,7 +94,7 @@ class _SignupSelectCategoryState extends State<SignupSelectCategory> {
                     (role == 'Customer')
                         ? SizedBox()
                         : Text(
-                            'Influencer profile',
+                            'Influencer profile'.tr(),
                             style: AppTheme.subtitle2.copyWith(color: Colors.white, fontSize: 14),
                           )
                   ],
@@ -104,7 +105,7 @@ class _SignupSelectCategoryState extends State<SignupSelectCategory> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 29.w),
               child: Text(
-                'Select 3 categories you are interested in',
+                'Select 3 categories you are interested in'.tr(),
                 style: AppTheme.subtitle2.copyWith(fontSize: 14),
               ),
             ),
@@ -181,10 +182,11 @@ class _SignupSelectCategoryState extends State<SignupSelectCategory> {
                         .call(params: AssignCategoryParams(categoriesIds: selectedIds));
                   } else {
                     Dialogs.showSnackBar(
-                        message: 'Please select at least 3 categories to proceed',
+                        message: 'Please select at least 3 categories to proceed'.tr(),
                         typeSnackBar: AnimatedSnackBarType.warning);
                   }
                 }
+                return null;
               },
               child: Row(
                 children: [
@@ -192,7 +194,7 @@ class _SignupSelectCategoryState extends State<SignupSelectCategory> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 27.w, vertical: 8.h),
                       child: CoustomButton(
-                        buttonName: "Continue",
+                        buttonName: "Continue".tr(),
                         backgoundColor: AppColors.kWhiteColor,
                         borderSideColor: AppColors.kPDarkBlueColor,
                         borderRadius: 10.0.r,

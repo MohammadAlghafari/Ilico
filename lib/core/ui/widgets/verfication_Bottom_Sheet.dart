@@ -7,6 +7,7 @@ import 'package:charja_charity/features/user_managment/data/model/login_model.da
 import 'package:charja_charity/features/user_managment/data/usecase/resend_otp_usecase.dart';
 import 'package:charja_charity/features/user_managment/data/usecase/verify_usecase.dart';
 import 'package:charja_charity/features/user_managment/ui/Sp_Sing_Up_Subscriptions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +16,7 @@ import 'package:pinput/pinput.dart';
 import '../../../features/user_managment/data/repository/auth_repository.dart';
 import '../../../features/user_managment/ui/signup_select_category.dart';
 import '../../constants/end_point.dart';
+import '../../http/graphQl_provider.dart';
 import '../../utils/cashe_helper.dart';
 import '../dialogs/dialogs.dart';
 import 'Coustom_Button.dart';
@@ -73,7 +75,7 @@ class _VerficationBottomSheetState extends State<VerficationBottomSheet> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: "A verification code has been sent to ",
+            text: "A verification code has been sent to".tr() + " ",
             style: AppTheme.subtitle1.copyWith(
               color: AppColors.kDimBlue,
             ),
@@ -144,6 +146,8 @@ class _VerficationBottomSheetState extends State<VerficationBottomSheet> {
               CashHelper.saveData(key: kAccessTOKENEXPIRATIONDATE, value: model.accessTokenExpirationDate);
               CashHelper.saveData(key: REFRESHTOKENEXPIRATIONDATE, value: model.refreshTokenExpirationDate);
               CashHelper.saveData(key: userType, value: model.userType);
+
+              GraphQlProvider.setQlLink(auth: true);
               switch (model.userType) {
                 case "Influencer":
                   Navigation.push(const SignupSelectCategory());

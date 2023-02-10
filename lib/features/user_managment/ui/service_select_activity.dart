@@ -1,4 +1,5 @@
 import 'package:charja_charity/core/ui/app_bar/app_bar_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -42,7 +43,7 @@ class _ServiceSelectActivityState extends State<ServiceSelectActivity> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBarWidget(
-          title: 'Select an activity',
+          title: 'Select an activity'.tr(),
           appBarHeight: 72.h,
           withBackButton: true,
           isCenterTitle: true,

@@ -2,6 +2,7 @@ import 'package:charja_charity/core/constants/app_colors.dart';
 import 'package:charja_charity/core/constants/app_styles.dart';
 import 'package:charja_charity/core/utils/Navigation/Navigation.dart';
 import 'package:charja_charity/features/profile/data/model/profile_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,10 +18,6 @@ class _SelectGategoriesState extends State<SelectGategories> {
   List<bool> isSelected = [];
   @override
   void initState() {
-    widget.activites?.forEach((element) {
-      isSelected.add(false);
-    });
-    print(widget.activites?.length);
     super.initState();
   }
 
@@ -33,7 +30,7 @@ class _SelectGategoriesState extends State<SelectGategories> {
           centerTitle: true,
           backgroundColor: AppColors.kWhiteColor,
           leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 color: AppColors.kPDarkBlueColor,
               ),
@@ -41,7 +38,7 @@ class _SelectGategoriesState extends State<SelectGategories> {
                 Navigation.pop();
               }),
           title: Text(
-            'Select an activity',
+            'Select an activity'.tr(),
             style: AppTheme.headline2.copyWith(color: AppColors.kPDarkBlueColor, fontSize: 18),
           ),
         ),
@@ -71,9 +68,9 @@ class _SelectGategoriesState extends State<SelectGategories> {
                           categoryModel: widget.activites![index],
                           value: widget.activites![index].isSelected,
                           onChange: (bool val) {
-                            widget.activites!.forEach((element) {
+                            for (var element in widget.activites!) {
                               element.isSelected = false;
-                            });
+                            }
                             widget.activites![index].isSelected = val;
                             setState(() {});
                           }),

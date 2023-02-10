@@ -50,6 +50,7 @@ class _ExampleScreenState extends State<ExampleScreen> with FormStateMinxin {
           //   initialParam: const {"sort": ""},
           // ),
           CreateModel(
+            withValidation: false,
         onSuccess: (valu) {
           print(valu);
         },

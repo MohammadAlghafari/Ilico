@@ -6,6 +6,7 @@ import 'package:charja_charity/features/user_managment/bloc/payment_cubit.dart';
 import 'package:charja_charity/features/user_managment/data/model/supscription_model.dart';
 import 'package:charja_charity/features/user_managment/data/usecase/payment_usecase.dart';
 import 'package:charja_charity/features/user_managment/ui/sp_Sing_up_Business_informations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       width: 34.w,
                     ),
                     Text(
-                      "Create your account",
+                      "Create your account".tr(),
                       style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                     ),
                   ],
@@ -106,11 +107,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "Subscriptions",
+                          "Subscriptions".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "Payment",
+                          "Payment".tr(),
                           style: AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -134,7 +135,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           /* mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,*/
           children: [
-            Text('Card Form', style: AppTheme.bodyText2.copyWith(fontSize: 14)),
+            Text('Card Form'.tr(), style: AppTheme.bodyText2.copyWith(fontSize: 14)),
             CardFormField(
               style: CardFormStyle(
                   backgroundColor: AppColors.kWhiteColor,
@@ -175,7 +176,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       backgoundColor: AppColors.kWhiteColor,
                       borderSideColor: AppColors.kPDarkBlueColor,
                       borderRadius: 10.0.r,
-                      buttonName: "Pay ${widget.supscription.price}€ and Continue",
+                      buttonName: "Pay ${widget.supscription.price}€ and Continue", //todo translate
                     ))
                   ],
                 );
@@ -188,7 +189,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     builder: (context) {
                       return AppDialog(
                           isHaveCancel: false,
-                          Confirm: "OK",
+                          Confirm: "OK".tr(),
                           btnWidth: 114.w,
                           buildContext: context,
                           body: WillPopScope(
@@ -206,7 +207,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               children: [
                                 SvgPicture.asset(checkCircle),
                                 Text(
-                                  "Congratulations",
+                                  "Congratulations".tr(),
                                   style: AppTheme.headline3
                                       .copyWith(fontWeight: FontWeight.w500, color: AppColors.kPDarkBlueColor),
                                   textAlign: TextAlign.center,
@@ -215,7 +216,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   height: 16.h,
                                 ),
                                 Text(
-                                  "Your payment has been succeeded",
+                                  "Your payment has been succeeded".tr(),
                                   style: AppTheme.subtitle1.copyWith(color: AppColors.kDimBlue, fontSize: 14),
                                   textAlign: TextAlign.center,
                                 ),

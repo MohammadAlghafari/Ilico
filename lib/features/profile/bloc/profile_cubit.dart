@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:charja_charity/core/results/result.dart';
+import 'package:charja_charity/features/profile/data/use_case/toggel_isAvaliable_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -45,6 +46,20 @@ class ProfileCubit extends Cubit<ProfileState> {
           error: editResult.error,
           callback: () {
             editProfile(params: params, editProfileParams: editProfileParams);
+          }));
+    }
+  }
+
+  Future<void> isAvaliabletoggle({ToggleIsAvaliableParams? params}) async {
+    emit(IsAvaliableLoading());
+    final result = await ToggleIsAvaliableUseCase(ProfileRepository()).call(params: params!);
+    if (result.hasDataOnly) {
+      emit(IsAvaliableSuccess());
+    } else if (result.hasErrorOnly) {
+      emit(IsAvaliableError(
+          error: result.error,
+          callback: () {
+            isAvaliabletoggle(params: params);
           }));
     }
   }

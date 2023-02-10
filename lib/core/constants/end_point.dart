@@ -10,12 +10,20 @@ const isPay = 'isPay';
 const kPageSize = 10;
 const limit = 20;
 const int page = 1;
+const String SORT_ASC = "asc";
+const String SORT_DESC = "desc";
+const messagesPerPage = 20;
 
 /////////////api/////////////////////
 
-const String BASE_URL = 'http://api.dev.illico1.com/api/v1/';
+const String BASE_URL = DEV_URL;
+const String QA_URL = 'http://api.qa.illico1.com/api/v1/';
+const String DEV_URL = 'http://api.dev.illico1.com/api/v1/';
+
 const String kExampleUrl = 'https://servicestest.mtnsyr.com:8443/api/Language';
-const String graphQlUrl = 'https://demo.saleor.io/graphql/';
+const String graphQlUrl = devGraphQlUrl;
+const String qaGraphQlUrl = 'http://api.qa.illico1.com/graphql';
+const String devGraphQlUrl = 'http://api.dev.illico1.com/graphql';
 const String pagingUrl = 'https://servicestest.mtnsyr.com:8443/api/Notification'; //todo delete
 const String uploadfile_URL = "upload/upload-files"; //todo delete
 const String LOGIN_URL = "client/auth/local-login";
@@ -40,6 +48,10 @@ const String GET_CATEGORIES_URL = 'client/category';
 const String ASSIGN_CATEGORIES_CUSTOMER = 'client/customer/assign-categories';
 const String ADD_PRODUCT = 'client/service-provider/create-product';
 const String ADD_SERVICE = 'client/service-provider/create-service';
+const String DELETE_PRODUCT = 'client/service-provider/delete-product';
+const String DELETE_SERVICE = 'client/service-provider/delete-service';
+const String UPDATE_PRODUCT = 'client/service-provider/update-product';
+const String UPDATE_SERVICE = 'client/service-provider/update-service';
 const String ASSIGN_CATEGOIES_INFLUNCER = 'client/influencer/assign-categories';
 const String Get_SERVICE = 'client/service-provider/service-provider-services';
 const String Get_PRODUCT = 'client/service-provider/service-provider-products';
@@ -53,3 +65,10 @@ const String ADD_PAYMENT = 'client/service-provider/choose-subscription';
 const refreshTokenURL = 'auth/refresh';
 //////Shared Preference Constant//////
 const String firstTimeOpenApp = "first_time_open_app";
+const String LATITUDE = "latitude";
+const String LONGITUDE = "longitude";
+const String chatUserId = 'chatUserId';
+const String chatPassword = 'chatPassword';
+const String chatLogin = 'chatLogin';
+const String customData = 'customData';
+const String chatState = 'chatState';

@@ -27,7 +27,7 @@ class ExampleModel extends BaseModel {
 }
 
 class ExampleItem extends BaseModel {
-  int? id;
+  String? id;
   String? name;
   String? code;
   String? icon;

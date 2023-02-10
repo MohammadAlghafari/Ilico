@@ -1,6 +1,7 @@
 import 'package:charja_charity/core/data_source/model.dart';
 
 import '../../../../core/responses/ApiResponse.dart';
+import 'get_product_model.dart';
 
 class AddServiceResponse extends ApiResponse<AddService> {
   AddServiceResponse({required super.errors, required super.success, required super.data});
@@ -12,32 +13,47 @@ class AddServiceResponse extends ApiResponse<AddService> {
 }
 
 class AddService extends BaseModel {
+  String? id;
   String? name;
   String? description;
-  int? price;
+  double? price;
   List<String>? images;
   List<String>? videos;
-  String? categoryId;
+  //String? categoryId;
+  Category? category;
 
-  AddService({this.name, this.description, this.price, this.images, this.videos, this.categoryId});
+  AddService({
+    this.id,
+    this.name,
+    this.description,
+    this.price,
+    this.images,
+    this.videos,
+    this.category,
+  });
 
   AddService.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     description = json['description'];
-    price = json['price'];
-    images = json['images'].cast<String>();
-    videos = json['videos'].cast<String>();
-    categoryId = json['categoryId'];
+    price = double.parse(json['price'].toString());
+    images = (json['images'] != null ? json['images'].cast<String>() : []);
+    videos = (json['videos'] != null ? json['videos'].cast<String>() : []);
+    category = json['category'] != null ? new Category.fromJson(json['category']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
     data['description'] = this.description;
     data['price'] = this.price;
     data['images'] = this.images;
     data['videos'] = this.videos;
-    data['categoryId'] = this.categoryId;
+    if (this.category != null) {
+      data['category'] = this.category!.toJson();
+    }
+
     return data;
   }
 }

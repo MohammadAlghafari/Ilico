@@ -6,12 +6,19 @@ import 'package:video_player/video_player.dart';
 import '../../../core/constants/app_colors.dart';
 
 class VideoWidget extends StatefulWidget {
-  const VideoWidget({Key? key, required this.height, required this.width, required this.fit, required this.image})
+  const VideoWidget(
+      {Key? key,
+      required this.height,
+      required this.width,
+      required this.fit,
+      required this.image,
+      required this.imageType})
       : super(key: key);
   final double height;
   final double width;
   final BoxFit fit;
-  final File image;
+  final String image;
+  final String imageType;
 
   @override
   State<VideoWidget> createState() => _VideoWidgetState();
@@ -19,17 +26,42 @@ class VideoWidget extends StatefulWidget {
 
 class _VideoWidgetState extends State<VideoWidget> {
   late VideoPlayerController _controller;
+  bool _isPlaying = false;
   @override
   void initState() {
     // TODO: implement initState
 
     // imageSelected = widget.image;
 
-    _controller = VideoPlayerController.file(widget.image)
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
+    if (widget.imageType == "file") {
+      _controller = VideoPlayerController.file(File(widget.image))
+        ..addListener(() {
+          final bool isPlaying = _controller.value.isPlaying;
+          if (isPlaying != _isPlaying) {
+            setState(() {
+              _isPlaying = isPlaying;
+            });
+          }
+        })
+        ..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {});
+        });
+    } else {
+      _controller = VideoPlayerController.network(widget.image)
+        ..addListener(() {
+          final bool isPlaying = _controller.value.isPlaying;
+          if (isPlaying != _isPlaying) {
+            setState(() {
+              _isPlaying = isPlaying;
+            });
+          }
+        })
+        ..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {});
+        });
+    }
 
     super.initState();
   }
@@ -59,7 +91,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (_controller.value.isPlaying) {
+                      if (_isPlaying) {
                         _controller.pause();
                       } else {
                         _controller.play();

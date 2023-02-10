@@ -1,9 +1,13 @@
 import 'package:charja_charity/core/constants/app_styles.dart';
 import 'package:charja_charity/core/constants/end_point.dart';
+import 'package:charja_charity/core/http/graphQl_provider.dart';
 import 'package:charja_charity/core/ui/app_bar/app_bar_widget.dart';
-import 'package:charja_charity/core/ui/widgets/view_profile_card.dart';
 import 'package:charja_charity/core/utils/Navigation/Navigation.dart';
 import 'package:charja_charity/features/Notifications/ui/notifications_Screen.dart';
+import 'package:charja_charity/features/profile/ui/update_category_screen.dart';
+import 'package:charja_charity/features/search/data/model/search_model.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,23 +18,33 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_icons.dart';
 import '../../../core/ui/dialogs/app_dialog.dart';
 import '../../../core/ui/widgets/Coustom_Button.dart';
+import '../../../core/ui/widgets/sheet/coustom_sheet.dart';
+import '../../../core/ui/widgets/unicorn_outline_button.dart';
 import '../../../core/utils/cashe_helper.dart';
+import '../../../core/utils/language_helper.dart';
+import '../../../core/utils/located_my_location.dart';
 import '../../Contact_Policy/ui/FAQ_Screen.dart';
 import '../../Contact_Policy/ui/contact_Us_Screen.dart';
 import '../../Contact_Policy/ui/privacy_Policy_Screen.dart';
 import '../../Contact_Policy/ui/termsAndConditions.dart';
+import '../../user_managment/data/model/logout_model.dart';
 import '../../user_managment/data/repository/auth_repository.dart';
 import '../../user_managment/data/usecase/logout_usecase.dart';
+import '../../user_managment/ui/reset_password_screen.dart';
 import '../data/model/profile_model.dart';
 import '../data/profile_repository/profile_repository.dart';
 import '../data/use_case/profile_usecase.dart';
-import '../widgets/category_item.dart';
+import '../widgets/share_profile_widget.dart';
 import 'businessContent.dart';
 import 'edit_profile_screen.dart';
+import 'influencers_profile_screen.dart';
 import 'my_content.dart';
+import 'my_favorite_screen.dart';
+import 'service_provider_profile_screen.dart' as ps;
 
 class MyProfile extends StatefulWidget {
   final VoidCallback? function;
+
   const MyProfile({Key? key, this.function}) : super(key: key);
 
   @override
@@ -44,7 +58,7 @@ class _MyProfileState extends State<MyProfile> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBarWidget(
-          title: 'Profile',
+          title: 'Profile'.tr(),
           action: [
             buildActionWidget(context),
           ],
@@ -52,7 +66,9 @@ class _MyProfileState extends State<MyProfile> {
           withBackButton: false,
           leadingWidget: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Image.asset(logo_White, scale: 6),
+            child: SvgPicture.asset(
+              logo_White,
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -85,127 +101,7 @@ Widget buildActionWidget(context) {
                 context: context,
                 widget: Padding(
                   padding: EdgeInsets.symmetric(vertical: 29.h),
-                  child: Column(
-                    children: [
-                      UnicornOutlineButton(
-                        minWidth: 85,
-                        minHeight: 85,
-                        strokeWidth: 2,
-                        radius: 200,
-                        gradient: const LinearGradient(
-                          colors: [
-                            AppColors.kPDarkBlueColor,
-                            AppColors.kSFlashyGreenColor,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        child: SizedBox(
-                          width: 80.w,
-                          child: Image.asset(
-                            'assets/images/Rectangle.png',
-                            scale: 2,
-                          ),
-                        ),
-                        onPressed: () {},
-                      ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      Text(
-                        'Jane Doe',
-                        style: AppTheme.headline3.copyWith(color: AppColors.kPDarkBlueColor),
-                      ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CategoryWidget(),
-                          SizedBox(
-                            width: 12.w,
-                          ),
-                          const CategoryWidget()
-                        ],
-                      ),
-                      SizedBox(
-                        height: 25.h,
-                      ),
-                      Container(
-                        height: 200,
-                        width: 200,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.kPDarkBlueColor,
-                            ),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: SvgPicture.asset('assets/images/qr-code.svg', fit: BoxFit.contain),
-                      ),
-                      SizedBox(
-                        height: 48.h,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 27.w),
-                              child: CoustomButton(
-                                widgetContent: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SvgPicture.asset(downloadIcon),
-                                    Text(
-                                      'Save to gallery',
-                                      textAlign: TextAlign.center,
-                                      style: AppTheme.button.copyWith(color: AppColors.kPDarkBlueColor),
-                                    )
-                                  ],
-                                ),
-
-                                // buttonName: "Sign in",
-                                backgoundColor: AppColors.kWhiteColor,
-                                borderSideColor: AppColors.kPDarkBlueColor,
-                                borderRadius: 10.0.r,
-                                function: () {}, buttonName: '',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 27.w),
-                              child: CoustomButton(
-                                  widgetContent: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SvgPicture.asset(shareIcon),
-                                      Text(
-                                        'Share the profile',
-                                        textAlign: TextAlign.center,
-                                        style: AppTheme.button.copyWith(color: AppColors.kPDarkBlueColor),
-                                      )
-                                    ],
-                                  ),
-
-                                  // buttonName: "Sign in",
-                                  backgoundColor: AppColors.kWhiteColor,
-                                  borderSideColor: AppColors.kPDarkBlueColor,
-                                  borderRadius: 10.0.r,
-                                  function: () {}),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  child: const ShareProfileWidget(),
                 ));
           },
           child: SvgPicture.asset(qrCode)));
@@ -215,6 +111,7 @@ class ProfileScreen extends StatefulWidget {
   final UserInfo profileModel;
   final VoidCallback function;
   final String role;
+
   const ProfileScreen({Key? key, required this.role, required this.profileModel, required this.function})
       : super(key: key);
 
@@ -224,6 +121,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late UserInfo? profileModel;
+
   get role => CashHelper.getRole();
 
   @override
@@ -255,19 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           minHeight: 78,
           strokeWidth: 2,
           radius: 200,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Container(
-              height: 83.h,
-              width: 80.w,
-              child: profileModel?.photoUrl == null || profileModel?.photoUrl == ""
-                  ? Image.asset(
-                      'assets/images/Rectangle.png',
-                      scale: 2,
-                    )
-                  : Image.network((profileModel?.photoUrl)!, fit: BoxFit.cover),
-            ),
-          ),
+          photoUrl: profileModel!.photoUrl,
           onPressed: () {},
         ),
         SizedBox(
@@ -287,6 +173,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 profileModel = model;
                 setState(() {});
               },
+              function: () {
+                setState(() {});
+              },
               profileModel: profileModel,
             ));
           },
@@ -296,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 160.w,
             height: 40.h,
             child: Center(
-              child: Text('Edit Profile',
+              child: Text('Edit Profile'.tr(),
                   style: AppTheme.subtitle2.copyWith(color: AppColors.kPDarkBlueColor, fontSize: 14)),
             ),
           ),
@@ -316,10 +205,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 ItemProfile(
                   onTap: () {
+                    CustomSheet.show(
+                        isDismissible: false,
+                        // title: "Verify Mobile Number".tr(),
+                        context: context,
+                        child: LanguageWidget());
+                    // Navigation.push(const LanguageScreen());
+                  },
+                  assets: question,
+                  title: 'Language'.tr(),
+                ),
+                const Divider(
+                  color: AppColors.kGreyLight,
+                ),
+                ItemProfile(
+                  onTap: () {
                     Navigation.push(const FAQScreen());
                   },
                   assets: question,
-                  title: 'FAQ',
+                  title: 'FAQ'.tr(),
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
@@ -329,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigation.push(ContactUsScreen());
                   },
                   assets: contactUs,
-                  title: 'Contact Us / Claims',
+                  title: 'Contact Us / Claims'.tr(),
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
@@ -339,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigation.push(const PrivacyPolicyScreen());
                   },
                   assets: privacyPolicy,
-                  title: 'Privacy policy',
+                  title: 'Privacy policy'.tr(),
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
@@ -349,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigation.push(const TermsAndConditionsScreen());
                   },
                   assets: terms,
-                  title: 'Terms and conditions',
+                  title: 'Terms and conditions'.tr(),
                 ),
               ],
             )),
@@ -376,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 24.h,
                         ),
                         Text(
-                          'Log out',
+                          'Log out'.tr(),
                           style: AppTheme.headline3.copyWith(color: AppColors.kPDarkBlueColor),
                         ),
                         SizedBox(
@@ -387,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Text(
                             textAlign: TextAlign.center,
                             maxLines: 2,
-                            ' Are you sure you would like log out of your account?',
+                            'Are you sure you would like log out of your account?'.tr(),
                             style: AppTheme.subtitle1.copyWith(color: AppColors.kPDarkBlueColor, fontSize: 14),
                           ),
                         ),
@@ -410,7 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   function: () {
                                     Navigator.pop(context);
                                   },
-                                  buttonName: "Cancel",
+                                  buttonName: "Cancel".tr(),
                                   backgoundColor: AppColors.kWhiteColor,
                                   borderSideColor: AppColors.kPDarkBlueColor,
                                   borderRadius: 10.0.r,
@@ -421,11 +325,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               Expanded(
                                 child: CreateModel(
-                                  onSuccess: (bool result) {
-                                    Navigator.pop(context);
-                                    setState(() {});
-                                    CashHelper.removeLoginData();
-                                    widget.function.call();
+                                  onSuccess: (LogOutModel result) {
+                                    if (result.message.isNotEmpty) {
+                                      Navigator.pop(context);
+                                      setState(() {});
+                                      CashHelper.removeLoginData();
+                                      try {
+                                        CubeChatConnection.instance.logout();
+                                      } catch (e) {
+                                        debugPrint(e.toString());
+                                      }
+                                      GraphQlProvider.setQlLink(auth: false);
+                                      widget.function.call();
+                                    }
                                   },
                                   withValidation: false,
                                   useCaseCallBack: (model) {
@@ -436,7 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     //
                                     //
                                     // },
-                                    buttonName: "Log out",
+                                    buttonName: 'Log out'.tr(),
                                     backgoundColor: AppColors.kWhiteColor,
                                     borderSideColor: AppColors.kPDarkBlueColor,
                                     borderRadius: 10.0.r,
@@ -455,7 +367,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context: context);
             },
             assets: logout,
-            title: 'Log out',
+            title: 'Log out'.tr(),
           ),
         ),
         SizedBox(
@@ -501,22 +413,38 @@ class ProfileCustomerWidget extends StatelessWidget {
         child: Column(
           children: [
             ItemProfile(
+              assets: activityIcon,
+              title: "My Categories".tr(),
+              onTap: () {
+                Navigation.push(UpdateCategoryScreen());
+              },
+            ),
+            const Divider(
+              color: AppColors.kGreyLight,
+            ),
+            ItemProfile(
               assets: heart,
-              title: 'My favourites',
+              title: 'My favourites'.tr(),
+              onTap: () {
+                Navigation.push(MyFavoriteScreen());
+              },
             ),
             const Divider(
               color: AppColors.kGreyLight,
             ),
             ItemProfile(
               assets: notificationIcon,
-              title: 'Notifications',
+              title: 'Notifications'.tr(),
             ),
             const Divider(
               color: AppColors.kGreyLight,
             ),
             ItemProfile(
+              onTap: () {
+                Navigation.push(ResetPasswordScreen());
+              },
               assets: password,
-              title: 'Password and security',
+              title: 'Password and security'.tr(),
             ),
           ],
         ),
@@ -545,14 +473,35 @@ class ProfileInflencerWidget extends StatelessWidget {
               children: [
                 ItemProfile(
                   assets: profile,
-                  title: 'My profile',
+                  title: 'My profile'.tr(),
+                  onTap: () {
+                    Navigation.push(InfluencersProfileScreen(
+                        isMyProfile: true,
+                        data: SearchOfServiceProvider(
+                          userType: CashHelper.getRole(), id: user.id, isSelected: false, isFav: false,
+                          //TODO Add Fav to Influencers Profile Screen
+                        )));
+                  },
+                ),
+                const Divider(
+                  color: AppColors.kGreyLight,
+                ),
+                ItemProfile(
+                  assets: activityIcon,
+                  title: "My Categories".tr(),
+                  onTap: () {
+                    Navigation.push(UpdateCategoryScreen());
+                  },
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
                 ),
                 ItemProfile(
                   assets: heart,
-                  title: 'My favourites',
+                  title: 'My favourites'.tr(),
+                  onTap: () {
+                    Navigation.push(MyFavoriteScreen());
+                  },
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
@@ -566,7 +515,7 @@ class ProfileInflencerWidget extends StatelessWidget {
                   },
                   child: ItemProfile(
                     assets: content,
-                    title: 'My content',
+                    title: 'My content'.tr(),
                   ),
                 ),
               ],
@@ -586,17 +535,17 @@ class ProfileInflencerWidget extends StatelessWidget {
                       Navigation.push(const NotificationsScreen());
                     },
                     assets: notificationIcon,
-                    title: 'Notifications',
+                    title: 'Notifications'.tr(),
                   ),
                   const Divider(
                     color: AppColors.kGreyLight,
                   ),
                   ItemProfile(
                     onTap: () {
-                      Navigation.push(ContactUsScreen());
+                      Navigation.push(ResetPasswordScreen());
                     },
                     assets: password,
-                    title: 'Password and security',
+                    title: 'Password and security'.tr(),
                   ),
                 ],
               )),
@@ -608,6 +557,7 @@ class ProfileInflencerWidget extends StatelessWidget {
 
 class ProfileServicePWidget extends StatefulWidget {
   ProfileSpModel profileModel;
+
   ProfileServicePWidget({Key? key, required this.profileModel}) : super(key: key);
 
   @override
@@ -630,21 +580,54 @@ class _ProfileServicePWidgetState extends State<ProfileServicePWidget> {
               children: [
                 ItemProfile(
                   assets: profile,
-                  title: 'My profile',
+                  title: 'My profile'.tr(),
+                  onTap: () {
+                    if (CashHelper.getData(key: LATITUDE) == null && CashHelper.getData(key: LONGITUDE) == null) {
+                      LocatedMyLocation.determinePosition();
+                    } else {
+                      Navigation.push(ps.ServiceProviderProfileScreen(
+                          isMyProfile: true,
+                          data: SearchOfServiceProvider(
+                            userType: CashHelper.getRole(),
+                            id: widget.profileModel.id,
+                            isAvailable: widget.profileModel.isAvailable,
+                            isEventProgress: widget.profileModel.isEventProgress,
+                            isFav: true,
+                            isSelected: false,
+                            generalInformation: GeneralInformation(distance: 1.0),
+                          )));
+                    }
+                  },
+                ),
+                const Divider(
+                  color: AppColors.kGreyLight,
+                ),
+                ItemProfile(
+                  assets: activityIcon,
+                  title: "My activities".tr(),
+                  onTap: () {
+                    Navigation.push(UpdateCategoryScreen(
+                      //TODO add number of activities to Categories screen
+                      categoryNumber: widget.profileModel.activityCount,
+                    ));
+                  },
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
                 ),
                 ItemProfile(
                   assets: job,
-                  title: 'Jobs alerts',
+                  title: 'Jobs alerts'.tr(),
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
                 ),
                 ItemProfile(
                   assets: heart,
-                  title: 'My favourites',
+                  title: 'My favourites'.tr(),
+                  onTap: () {
+                    Navigation.push(MyFavoriteScreen());
+                  },
                 ),
                 const Divider(
                   color: AppColors.kGreyLight,
@@ -652,15 +635,16 @@ class _ProfileServicePWidgetState extends State<ProfileServicePWidget> {
                 ItemProfile(
                   onTap: () {
                     Navigation.push(BusinessContent(
+                      valueChanged: (b) {},
+                      profileModel: widget.profileModel,
                       callBack: (model) {
                         widget.profileModel.companyModel = model;
                         setState(() {});
                       },
-                      profileModel: widget.profileModel,
                     ));
                   },
                   assets: content,
-                  title: 'Business Content',
+                  title: 'Business content'.tr(),
                 ),
               ],
             ),
@@ -679,17 +663,17 @@ class _ProfileServicePWidgetState extends State<ProfileServicePWidget> {
                       Navigation.push(const NotificationsScreen());
                     },
                     assets: notificationIcon,
-                    title: 'Notifications',
+                    title: 'Notifications'.tr(),
                   ),
                   const Divider(
                     color: AppColors.kGreyLight,
                   ),
                   ItemProfile(
                     onTap: () {
-                      Navigation.push(ContactUsScreen());
+                      Navigation.push(ResetPasswordScreen());
                     },
                     assets: password,
-                    title: 'Password and security',
+                    title: 'Password and security'.tr(),
                   ),
                 ],
               )),
@@ -701,6 +685,7 @@ class _ProfileServicePWidgetState extends State<ProfileServicePWidget> {
 
 class ItemProfile extends StatelessWidget {
   ItemProfile({required this.assets, required this.title, this.onTap});
+
   final String assets;
   final String title;
   final dynamic Function()? onTap;
@@ -727,6 +712,158 @@ class ItemProfile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LanguageSheet extends StatefulWidget {
+  late final bool isSelectedLang;
+  final String title;
+  Function(bool) onChange;
+
+  LanguageSheet({Key? key, required this.isSelectedLang, required this.title, required this.onChange})
+      : super(key: key);
+
+  @override
+  State<LanguageSheet> createState() => _LanguageSheetState();
+}
+
+class _LanguageSheetState extends State<LanguageSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        if (widget.title == 'English') {
+          context.setLocale(LanguageHelper.kEnglishLocale);
+        } else {
+          context.setLocale(LanguageHelper.kFranceLocale);
+        }
+        widget.onChange(!widget.isSelectedLang);
+        setState(() {});
+      },
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 13.67.w),
+            child: Container(
+              width: 23.w,
+              height: 23.h,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 2, color: widget.isSelectedLang ? AppColors.kPDarkBlueColor : AppColors.kGrayBorder),
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: widget.isSelectedLang ? AppColors.kPDarkBlueColor : Colors.white),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 2.w,
+          ),
+          Text(
+            (widget.title),
+            style: AppTheme.subtitle2.copyWith(
+                color: widget.isSelectedLang ? AppColors.kPDarkBlueColor : AppColors.kGrayBorder, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LanguageWidget extends StatefulWidget {
+  const LanguageWidget({Key? key}) : super(key: key);
+
+  @override
+  State<LanguageWidget> createState() => _LanguageWidgetState();
+}
+
+class _LanguageWidgetState extends State<LanguageWidget> {
+  List<String> lang = ['English', 'French'];
+
+  // String selectedItem = 'English';
+  bool isSelected = false;
+  int selectedIndex = 0;
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (context.locale == LanguageHelper.kEnglishLocale) {
+      lang[0] = 'English';
+      selectedIndex = 0;
+    } else {
+      lang[1] = 'French';
+      selectedIndex = 1;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 24.h),
+      child: Column(children: [
+        Text(
+          'Select language',
+          style: AppTheme.headline2.copyWith(color: AppColors.kPDarkBlueColor, fontSize: 20),
+        ),
+        SizedBox(
+          height: 42.h,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(height: 35.h),
+              padding: EdgeInsets.zero,
+              itemCount: lang.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return LanguageSheet(
+                  onChange: (val) {
+                    selectedIndex = index;
+                    isSelected = val;
+                    setState(() {});
+                  },
+                  isSelectedLang: selectedIndex == index,
+                  title: lang[index],
+                );
+              }),
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+        const Divider(
+          thickness: 1,
+          endIndent: 20,
+          indent: 20,
+          color: AppColors.kLightColor,
+        ),
+        SizedBox(
+          height: 38.h,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: CoustomButton(
+                  function: () {
+                    Navigation.pop();
+                  },
+                  buttonName: "OK",
+                  backgoundColor: AppColors.kWhiteColor,
+                  borderSideColor: AppColors.kPDarkBlueColor,
+                  borderRadius: 10.0.r,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:charja_charity/core/boilerplate/create_model/widgets/create_mode
 import 'package:charja_charity/core/ui/app_bar/app_bar_widget.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
 import 'package:charja_charity/features/user_managment/data/repository/auth_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,7 +34,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with FormSt
         backgroundColor: Colors.white,
         appBar: AppBarWidget(
             action: const [],
-            title: "Password and security",
+            title: "Password and security".tr(),
             withBackButton: true,
             isCenterTitle: true,
             appBarHeight: 70.h),
@@ -63,8 +64,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with FormSt
                         },
                         focusNode: form.nodes[0],
                         textEditingController: form.controllers[0],
-                        hintText: 'Enter your new password',
-                        labelText: 'New password',
+                        hintText: 'Enter your new password'.tr(),
+                        labelText: 'New password'.tr(),
                         labelStyle: AppTheme.subtitle2.copyWith(fontSize: 14),
                       ),
                     ),
@@ -85,8 +86,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with FormSt
                         },
                         focusNode: form.nodes[1],
                         textEditingController: form.controllers[1],
-                        hintText: 'Enter your new password',
-                        labelText: 'Confirm new password',
+                        hintText: 'Enter your new password'.tr(),
+                        labelText: 'Confirm new password'.tr(),
                         labelStyle: AppTheme.subtitle2.copyWith(fontSize: 14),
                       ),
                     ),
@@ -115,7 +116,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with FormSt
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 27.w, vertical: 10.h),
                         child: CoustomButton(
-                          buttonName: "Change Password",
+                          buttonName: "Change Password".tr(),
                           backgoundColor: AppColors.kWhiteColor,
                           borderSideColor: AppColors.kPDarkBlueColor,
                           borderRadius: 10.0.r,

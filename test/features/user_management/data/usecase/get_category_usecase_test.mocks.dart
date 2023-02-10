@@ -5,46 +5,62 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:charja_charity/core/data_source/model.dart' as _i22;
-import 'package:charja_charity/core/errors/base_error.dart' as _i24;
+import 'package:charja_charity/core/data_source/model.dart' as _i30;
+import 'package:charja_charity/core/errors/base_error.dart' as _i32;
 import 'package:charja_charity/core/results/result.dart' as _i2;
 import 'package:charja_charity/features/profile/data/model/profile_model.dart'
-    as _i14;
+    as _i22;
 import 'package:charja_charity/features/user_managment/data/model/login_model.dart'
     as _i5;
-import 'package:charja_charity/features/user_managment/data/model/supscription_model.dart'
-    as _i17;
-import 'package:charja_charity/features/user_managment/data/model/user_model.dart'
+import 'package:charja_charity/features/user_managment/data/model/logout_model.dart'
+    as _i16;
+import 'package:charja_charity/features/user_managment/data/model/resetPasswordModel.dart'
     as _i7;
+import 'package:charja_charity/features/user_managment/data/model/supscription_model.dart'
+    as _i25;
+import 'package:charja_charity/features/user_managment/data/model/user_model.dart'
+    as _i9;
 import 'package:charja_charity/features/user_managment/data/repository/auth_repository.dart'
     as _i3;
 import 'package:charja_charity/features/user_managment/data/usecase/assign_category.dart'
-    as _i16;
+    as _i24;
 import 'package:charja_charity/features/user_managment/data/usecase/change_password_usecase.dart'
+    as _i29;
+import 'package:charja_charity/features/user_managment/data/usecase/facebook_login_ussecase.dart'
     as _i21;
 import 'package:charja_charity/features/user_managment/data/usecase/forget_password_usecase.dart'
-    as _i9;
+    as _i14;
 import 'package:charja_charity/features/user_managment/data/usecase/get_category_usecase.dart'
-    as _i15;
+    as _i23;
+import 'package:charja_charity/features/user_managment/data/usecase/login_apple_usecase.dart'
+    as _i20;
 import 'package:charja_charity/features/user_managment/data/usecase/login_usecse.dart'
     as _i6;
 import 'package:charja_charity/features/user_managment/data/usecase/login_with_google.dart'
-    as _i13;
-import 'package:charja_charity/features/user_managment/data/usecase/logout_usecase.dart'
-    as _i11;
-import 'package:charja_charity/features/user_managment/data/usecase/payment_usecase.dart'
-    as _i20;
-import 'package:charja_charity/features/user_managment/data/usecase/resend_otp_usecase.dart'
-    as _i12;
-import 'package:charja_charity/features/user_managment/data/usecase/signup_usecase.dart'
-    as _i8;
-import 'package:charja_charity/features/user_managment/data/usecase/supscription_usecase.dart'
-    as _i18;
-import 'package:charja_charity/features/user_managment/data/usecase/verfiy_code_forget_password.dart'
     as _i19;
-import 'package:charja_charity/features/user_managment/data/usecase/verify_usecase.dart'
+import 'package:charja_charity/features/user_managment/data/usecase/logout_usecase.dart'
+    as _i17;
+import 'package:charja_charity/features/user_managment/data/usecase/payment_usecase.dart'
+    as _i28;
+import 'package:charja_charity/features/user_managment/data/usecase/resend_otp_usecase.dart'
+    as _i18;
+import 'package:charja_charity/features/user_managment/data/usecase/resetpasswordusecase.dart'
+    as _i8;
+import 'package:charja_charity/features/user_managment/data/usecase/signup_by_apple_usecase.dart'
+    as _i12;
+import 'package:charja_charity/features/user_managment/data/usecase/signup_by_facecbook.dart'
+    as _i13;
+import 'package:charja_charity/features/user_managment/data/usecase/signup_by_google.dart'
+    as _i11;
+import 'package:charja_charity/features/user_managment/data/usecase/signup_usecase.dart'
     as _i10;
-import 'package:dartz/dartz.dart' as _i23;
+import 'package:charja_charity/features/user_managment/data/usecase/supscription_usecase.dart'
+    as _i26;
+import 'package:charja_charity/features/user_managment/data/usecase/verfiy_code_forget_password.dart'
+    as _i27;
+import 'package:charja_charity/features/user_managment/data/usecase/verify_usecase.dart'
+    as _i15;
+import 'package:dartz/dartz.dart' as _i31;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -96,16 +112,35 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
         )),
       ) as _i4.Future<_i2.Result<_i5.LoginModel>>);
   @override
-  _i4.Future<_i2.Result<_i7.UserModel>> signUp(
-          {required _i8.SignUpParams? params}) =>
+  _i4.Future<_i2.Result<_i7.ResetPasswordModel>> changePassword(
+          {required _i8.ResetPasswordParams? params}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #changePassword,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i4.Future<_i2.Result<_i7.ResetPasswordModel>>.value(
+            _FakeResult_0<_i7.ResetPasswordModel>(
+          this,
+          Invocation.method(
+            #changePassword,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i4.Future<_i2.Result<_i7.ResetPasswordModel>>);
+  @override
+  _i4.Future<_i2.Result<_i9.UserModel>> signUp(
+          {required _i10.SignUpParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #signUp,
           [],
           {#params: params},
         ),
-        returnValue: _i4.Future<_i2.Result<_i7.UserModel>>.value(
-            _FakeResult_0<_i7.UserModel>(
+        returnValue: _i4.Future<_i2.Result<_i9.UserModel>>.value(
+            _FakeResult_0<_i9.UserModel>(
           this,
           Invocation.method(
             #signUp,
@@ -113,10 +148,67 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             {#params: params},
           ),
         )),
-      ) as _i4.Future<_i2.Result<_i7.UserModel>>);
+      ) as _i4.Future<_i2.Result<_i9.UserModel>>);
+  @override
+  _i4.Future<_i2.Result<_i9.UserModel>> signUpByGoogle(
+          {required _i11.SignUpByGoogleParams? params}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #signUpByGoogle,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i4.Future<_i2.Result<_i9.UserModel>>.value(
+            _FakeResult_0<_i9.UserModel>(
+          this,
+          Invocation.method(
+            #signUpByGoogle,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i4.Future<_i2.Result<_i9.UserModel>>);
+  @override
+  _i4.Future<_i2.Result<_i9.UserModel>> signUpByApple(
+          {required _i12.SignUpByAppleParams? params}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #signUpByApple,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i4.Future<_i2.Result<_i9.UserModel>>.value(
+            _FakeResult_0<_i9.UserModel>(
+          this,
+          Invocation.method(
+            #signUpByApple,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i4.Future<_i2.Result<_i9.UserModel>>);
+  @override
+  _i4.Future<_i2.Result<_i9.UserModel>> signUpByFacebook(
+          {required _i13.SignUpByFacebookParams? params}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #signUpByFacebook,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i4.Future<_i2.Result<_i9.UserModel>>.value(
+            _FakeResult_0<_i9.UserModel>(
+          this,
+          Invocation.method(
+            #signUpByFacebook,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i4.Future<_i2.Result<_i9.UserModel>>);
   @override
   _i4.Future<_i2.Result<bool>> forgetPassword(
-          {required _i9.ForgetPasswordParams? params}) =>
+          {required _i14.ForgetPasswordParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #forgetPassword,
@@ -134,7 +226,7 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
       ) as _i4.Future<_i2.Result<bool>>);
   @override
   _i4.Future<_i2.Result<_i5.LoginModel>> getUserInfo(
-          {required _i10.GetUserInfoParams? params}) =>
+          {required _i15.GetUserInfoParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getUserInfo,
@@ -152,14 +244,16 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
         )),
       ) as _i4.Future<_i2.Result<_i5.LoginModel>>);
   @override
-  _i4.Future<_i2.Result<bool>> LogOut({required _i11.LogOutParams? params}) =>
+  _i4.Future<_i2.Result<_i16.LogOutModel>> LogOut(
+          {required _i17.LogOutParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #LogOut,
           [],
           {#params: params},
         ),
-        returnValue: _i4.Future<_i2.Result<bool>>.value(_FakeResult_0<bool>(
+        returnValue: _i4.Future<_i2.Result<_i16.LogOutModel>>.value(
+            _FakeResult_0<_i16.LogOutModel>(
           this,
           Invocation.method(
             #LogOut,
@@ -167,10 +261,10 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             {#params: params},
           ),
         )),
-      ) as _i4.Future<_i2.Result<bool>>);
+      ) as _i4.Future<_i2.Result<_i16.LogOutModel>>);
   @override
   _i4.Future<_i2.Result<bool>> ResendOTP(
-          {required _i12.ResendOTPParams? params}) =>
+          {required _i18.ResendOTPParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #ResendOTP,
@@ -188,7 +282,7 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
       ) as _i4.Future<_i2.Result<bool>>);
   @override
   _i4.Future<_i2.Result<_i5.LoginModel>> loginWithGoogle(
-          {required _i13.GetLoginWithGoogleParams? params}) =>
+          {required _i19.GetLoginWithGoogleParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #loginWithGoogle,
@@ -206,16 +300,54 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
         )),
       ) as _i4.Future<_i2.Result<_i5.LoginModel>>);
   @override
-  _i4.Future<_i2.Result<List<_i14.Activities>>> getCategories(
-          {required _i15.GetCategoriesParams? params}) =>
+  _i4.Future<_i2.Result<_i5.LoginModel>> loginWithApple(
+          {required _i20.LoginWithAppleParams? params}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #loginWithApple,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i4.Future<_i2.Result<_i5.LoginModel>>.value(
+            _FakeResult_0<_i5.LoginModel>(
+          this,
+          Invocation.method(
+            #loginWithApple,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i4.Future<_i2.Result<_i5.LoginModel>>);
+  @override
+  _i4.Future<_i2.Result<_i5.LoginModel>> loginWithFacebook(
+          {required _i21.GetLoginWithFacebookParams? params}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #loginWithFacebook,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i4.Future<_i2.Result<_i5.LoginModel>>.value(
+            _FakeResult_0<_i5.LoginModel>(
+          this,
+          Invocation.method(
+            #loginWithFacebook,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i4.Future<_i2.Result<_i5.LoginModel>>);
+  @override
+  _i4.Future<_i2.Result<List<_i22.Activities>>> getCategories(
+          {required _i23.GetCategoriesParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCategories,
           [],
           {#params: params},
         ),
-        returnValue: _i4.Future<_i2.Result<List<_i14.Activities>>>.value(
-            _FakeResult_0<List<_i14.Activities>>(
+        returnValue: _i4.Future<_i2.Result<List<_i22.Activities>>>.value(
+            _FakeResult_0<List<_i22.Activities>>(
           this,
           Invocation.method(
             #getCategories,
@@ -223,18 +355,18 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             {#params: params},
           ),
         )),
-      ) as _i4.Future<_i2.Result<List<_i14.Activities>>>);
+      ) as _i4.Future<_i2.Result<List<_i22.Activities>>>);
   @override
-  _i4.Future<_i2.Result<_i14.UserInfo>> assignCategory(
-          {required _i16.AssignCategoryParams? params}) =>
+  _i4.Future<_i2.Result<_i22.UserInfo>> assignCategory(
+          {required _i24.AssignCategoryParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #assignCategory,
           [],
           {#params: params},
         ),
-        returnValue: _i4.Future<_i2.Result<_i14.UserInfo>>.value(
-            _FakeResult_0<_i14.UserInfo>(
+        returnValue: _i4.Future<_i2.Result<_i22.UserInfo>>.value(
+            _FakeResult_0<_i22.UserInfo>(
           this,
           Invocation.method(
             #assignCategory,
@@ -242,18 +374,18 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             {#params: params},
           ),
         )),
-      ) as _i4.Future<_i2.Result<_i14.UserInfo>>);
+      ) as _i4.Future<_i2.Result<_i22.UserInfo>>);
   @override
-  _i4.Future<_i2.Result<List<_i17.Supscription>>> getPackegs(
-          {required _i18.SupscriptionParams? params}) =>
+  _i4.Future<_i2.Result<List<_i25.Supscription>>> getPackegs(
+          {required _i26.SupscriptionParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getPackegs,
           [],
           {#params: params},
         ),
-        returnValue: _i4.Future<_i2.Result<List<_i17.Supscription>>>.value(
-            _FakeResult_0<List<_i17.Supscription>>(
+        returnValue: _i4.Future<_i2.Result<List<_i25.Supscription>>>.value(
+            _FakeResult_0<List<_i25.Supscription>>(
           this,
           Invocation.method(
             #getPackegs,
@@ -261,10 +393,10 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             {#params: params},
           ),
         )),
-      ) as _i4.Future<_i2.Result<List<_i17.Supscription>>>);
+      ) as _i4.Future<_i2.Result<List<_i25.Supscription>>>);
   @override
   _i4.Future<_i2.Result<bool>> ForgetPasswordOtp(
-          {required _i19.ForgetPasswordOtpParams? params}) =>
+          {required _i27.ForgetPasswordOtpParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #ForgetPasswordOtp,
@@ -281,16 +413,16 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
         )),
       ) as _i4.Future<_i2.Result<bool>>);
   @override
-  _i4.Future<_i2.Result<_i7.UserModel>> addPayment(
-          {required _i20.PaymentParams? params}) =>
+  _i4.Future<_i2.Result<_i9.UserModel>> addPayment(
+          {required _i28.PaymentParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #addPayment,
           [],
           {#params: params},
         ),
-        returnValue: _i4.Future<_i2.Result<_i7.UserModel>>.value(
-            _FakeResult_0<_i7.UserModel>(
+        returnValue: _i4.Future<_i2.Result<_i9.UserModel>>.value(
+            _FakeResult_0<_i9.UserModel>(
           this,
           Invocation.method(
             #addPayment,
@@ -298,10 +430,10 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             {#params: params},
           ),
         )),
-      ) as _i4.Future<_i2.Result<_i7.UserModel>>);
+      ) as _i4.Future<_i2.Result<_i9.UserModel>>);
   @override
   _i4.Future<_i2.Result<bool>> ChangePassword(
-          {required _i21.ChangePasswordParams? params}) =>
+          {required _i29.ChangePasswordParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #ChangePassword,
@@ -318,8 +450,8 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
         )),
       ) as _i4.Future<_i2.Result<bool>>);
   @override
-  _i2.Result<Model> call<Model extends _i22.BaseModel>(
-          {required _i23.Either<_i24.BaseError, _i22.BaseModel>? result}) =>
+  _i2.Result<Model> call<Model extends _i30.BaseModel>(
+          {required _i31.Either<_i32.BaseError, _i30.BaseModel>? result}) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
@@ -336,8 +468,8 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
         ),
       ) as _i2.Result<Model>);
   @override
-  _i2.Result<List<Model>> paginatedCall<Model extends _i22.BaseModel>(
-          {required _i23.Either<_i24.BaseError, _i22.BaseModel>? result}) =>
+  _i2.Result<List<Model>> paginatedCall<Model extends _i30.BaseModel>(
+          {required _i31.Either<_i32.BaseError, _i30.BaseModel>? result}) =>
       (super.noSuchMethod(
         Invocation.method(
           #paginatedCall,
@@ -355,7 +487,7 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
       ) as _i2.Result<List<Model>>);
   @override
   _i2.Result<bool> noModelCall(
-          {required _i23.Either<_i24.BaseError, bool>? result}) =>
+          {required _i31.Either<_i32.BaseError, bool>? result}) =>
       (super.noSuchMethod(
         Invocation.method(
           #noModelCall,

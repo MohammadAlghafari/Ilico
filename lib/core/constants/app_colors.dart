@@ -6,6 +6,7 @@ class AppColors {
   static const kPYellowColor = Color(0xffFFCC00);
   static const kPOrangeColor = Color(0xffE85500);
 
+
   ///SECONDARY COLOR///
   static const kSDarkPinkColor = Color(0xffCC059C);
   static const kSDarkPurpleColor = Color(0xffA00099);
@@ -25,6 +26,7 @@ class AppColors {
   static const kLightColor = Color(0xffF5F5F5);
   static const kWhiteColor = Color(0xffFFFFFF);
   static const kGreyWhite = Color(0xffF0F0F0);
+  static const kGreyDark = Color(0xff888F9B);
 
   static const kGreyLight = Color(0xffD9D9D9);
   static const kGrayTextField = Color(0xff797979);

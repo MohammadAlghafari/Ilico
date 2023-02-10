@@ -2,6 +2,7 @@ import 'package:charja_charity/core/constants/app_colors.dart';
 import 'package:charja_charity/core/constants/app_styles.dart';
 import 'package:charja_charity/core/ui/widgets/custom_text_field.dart';
 import 'package:charja_charity/core/utils/extension/text_field_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,9 +23,9 @@ class _AddSectionScreenState extends State<AddSectionScreen> with FormStateMinxi
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kWhiteColor,
-      appBar: const AppBarWidget(
+      appBar: AppBarWidget(
         withBackButton: false,
-        title: 'Submit a job ',
+        title: 'Submit a job'.tr(),
         action: [],
       ),
       body: Padding(
@@ -37,7 +38,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> with FormStateMinxi
                 height: 10.h,
               ),
               Text(
-                'Send an alert to the professionals around you for the service/product you are looking for. You will receive an alert as soon as a professional is available.',
+                'Send an alert to the professionals around you for the service/product you are looking for. You will receive an alert as soon as a professional is available.'
+                    .tr(),
                 style: AppTheme.subtitle1,
                 textAlign: TextAlign.center,
               ),
@@ -45,7 +47,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> with FormStateMinxi
                 height: 30.h,
               ),
               Text(
-                'Select the type of service',
+                'Select the type of service'.tr(),
                 style: AppTheme.subtitle2.copyWith(fontSize: 15),
               ),
               SizedBox(
@@ -55,7 +57,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> with FormStateMinxi
                 onTap: () {
                   CustomSheet.show(
                     context: context,
-                    title: "Type of service",
+                    title: "Type of service".tr(),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -84,7 +86,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> with FormStateMinxi
                           children: [
                             Expanded(
                               child: CoustomButton(
-                                  buttonName: "Ok",
+                                  buttonName: "Ok".tr(),
                                   backgoundColor: AppColors.kWhiteColor,
                                   borderSideColor: AppColors.kPDarkBlueColor,
                                   borderRadius: 10.0.r,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:charja_charity/features/profile/bloc/profile_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,7 +75,7 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                         width: 34.w,
                       ),
                       Text(
-                        "Create your account",
+                        "Create your account".tr(),
                         style: AppTheme.headline2.copyWith(color: AppColors.kWhiteColor),
                       ),
                     ],
@@ -109,12 +110,12 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            "Business informations",
+                            "Business informations".tr(),
                             style:
                                 AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            "Upload picture",
+                            "Upload picture".tr(),
                             style:
                                 AppTheme.headline5.copyWith(color: AppColors.kWhiteColor, fontWeight: FontWeight.w500),
                           ),
@@ -143,7 +144,7 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 26.w, vertical: 10.h),
                     child: Text(
-                      'Set a profile picture',
+                      'Set a profile picture'.tr(),
                       style: AppTheme.subtitle2.copyWith(fontSize: 14),
                     ),
                   ),
@@ -191,7 +192,7 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                                           crossAxisAlignment: WrapCrossAlignment.end,
                                           children: [
                                             ListTile(
-                                              title: const Text('Camera'),
+                                              title: Text('Camera'.tr()),
                                               leading: const Icon(Icons.camera),
                                               onTap: () {
                                                 selectImage(imageSource: ImageSource.camera)
@@ -201,7 +202,7 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                                               },
                                             ),
                                             ListTile(
-                                                title: const Text('Gallery'),
+                                                title: Text('Gallery'.tr()),
                                                 leading: const Icon(Icons.image),
                                                 onTap: () {
                                                   selectImage(imageSource: ImageSource.gallery)
@@ -222,14 +223,14 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Upload photo',
+                                    'Upload picture'.tr(),
                                     style: AppTheme.subtitle2.copyWith(fontSize: 14, color: AppColors.kPOrangeColor),
                                   ),
                                   const SizedBox(
                                     height: 5,
                                   ),
                                   Text(
-                                    'The recommended size is 000x000 px',
+                                    'The recommended size is 000x000 px'.tr(),
                                     style: AppTheme.subtitle1.copyWith(color: AppColors.kGrayTextField, fontSize: 12),
                                   )
                                 ],
@@ -260,7 +261,7 @@ class _SignUpUploadPictureState extends State<SignUpUploadPicture> {
                       child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 27.w, vertical: 10.h),
                           child: CoustomButton(
-                              buttonName: "Save",
+                              buttonName: "Save".tr(),
                               backgoundColor: AppColors.kWhiteColor,
                               borderSideColor: AppColors.kPDarkBlueColor,
                               borderRadius: 10.0.r,

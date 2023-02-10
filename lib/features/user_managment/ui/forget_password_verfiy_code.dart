@@ -1,3 +1,5 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
@@ -5,9 +7,11 @@ import 'package:pinput/pinput.dart';
 import '../../../core/boilerplate/create_model/widgets/create_model.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../core/ui/dialogs/dialogs.dart';
 import '../../../core/ui/widgets/Coustom_Button.dart';
 import '../../../core/ui/widgets/verfication_Bottom_Sheet.dart';
 import '../../../core/utils/Navigation/Navigation.dart';
+import '../data/usecase/forget_password_usecase.dart';
 import '../data/repository/auth_repository.dart';
 import '../data/usecase/verfiy_code_forget_password.dart';
 import 'change_password_screen.dart';
@@ -63,13 +67,13 @@ class _VerfiyCodeForgetPasswordState extends State<VerfiyCodeForgetPassword> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: "A verification code has been sent to ",
+            text: "A verification code has been sent to".tr(),
             style: AppTheme.subtitle1.copyWith(
               color: AppColors.kDimBlue,
             ),
             children: [
               TextSpan(
-                  text: "${widget.email}",
+                  text: " ${widget.email}",
                   style: AppTheme.subtitle2.copyWith(
                     color: AppColors.kDimBlue,
                   )),
@@ -98,29 +102,29 @@ class _VerfiyCodeForgetPasswordState extends State<VerfiyCodeForgetPassword> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            // Text(
-            //   textAlign: TextAlign.center,
-            //   "Don't recieve a code? ",
-            //   style: AppTheme.subtitle1.copyWith(color: AppColors.kGrayTextField.withOpacity(0.5), fontSize: 14),
-            // ),
-            // CreateModel(
-            //   onSuccess: (bool result) {
-            //     if (result) {
-            //       Dialogs.showSnackBar(message: "Code Resend Successfully", typeSnackBar: AnimatedSnackBarType.success);
-            //       // Navigation.push(const SelectGategories());
-            //     }
-            //   },
-            //   withValidation: false,
-            //   useCaseCallBack: (model) {
-            //     // print("email : ${widget.phoneNumber}\n\n\n");
-            //     return ResendOTPUseCase(AuthRepository()).call(params: ResendOTPParams(email: widget.email!));
-            //   },
-            //   child: Text(
-            //     "Resend",
-            //     style: AppTheme.subtitle2.copyWith(color: AppColors.kGrayTextField.withOpacity(0.5), fontSize: 14),
-            //   ),
-            // ),
+          children: [
+            Text(
+              textAlign: TextAlign.center,
+              "Don't recieve a code? ",
+              style: AppTheme.subtitle1.copyWith(color: AppColors.kGrayTextField.withOpacity(0.5), fontSize: 14),
+            ),
+            CreateModel(
+              onSuccess: (bool result) {
+                if (result) {
+                  Dialogs.showSnackBar(message: "Code Resend Successfully", typeSnackBar: AnimatedSnackBarType.success);
+                  // Navigation.push(const SelectGategories());
+                }
+              },
+              withValidation: false,
+              useCaseCallBack: (model) {
+                return ForgetPasswordUseCase(AuthRepository())
+                    .call(params: ForgetPasswordParams(email: widget.email));
+                },
+              child: Text(
+                "Resend",
+                style: AppTheme.subtitle2.copyWith(color: AppColors.kGrayTextField.withOpacity(0.5), fontSize: 14),
+              ),
+            ),
           ],
         ),
         SizedBox(
@@ -142,7 +146,7 @@ class _VerfiyCodeForgetPasswordState extends State<VerfiyCodeForgetPassword> {
             children: [
               Expanded(
                 child: CoustomButton(
-                  buttonName: "Submit",
+                  buttonName: "Submit".tr(),
                   backgoundColor: AppColors.kWhiteColor,
                   borderSideColor: AppColors.kPDarkBlueColor,
                   borderRadius: 10.0.r,

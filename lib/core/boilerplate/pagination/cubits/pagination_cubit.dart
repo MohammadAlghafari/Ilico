@@ -5,7 +5,7 @@ import '../models/get_list_request.dart';
 
 part 'pagination_state.dart';
 
-typedef RepositoryCallBack = Future<Result> Function(dynamic data);
+typedef RepositoryCallBack = Future<Result>? Function(dynamic data);
 
 class PaginationCubit<ListModel> extends Cubit<PaginationState> {
   final RepositoryCallBack getData;
@@ -13,7 +13,7 @@ class PaginationCubit<ListModel> extends Cubit<PaginationState> {
   PaginationCubit(this.getData) : super(PaginationInitial());
   List<ListModel> list = [];
   Map<String, dynamic> params = {};
-  int limit = 5;
+  int limit = 10;
   int page = 1;
   String order = 'asc';
 
@@ -30,23 +30,29 @@ class PaginationCubit<ListModel> extends Cubit<PaginationState> {
       page: page,
       order: order,
     );
-
     var response = await getData(requestData);
-    if (response.hasDataOnly) {
-      if (loadMore) {
-        list.addAll(response.data as List<ListModel>);
-      } else {
-        list = response.data as List<ListModel>;
-      }
 
-      emit(GetListSuccessfully(list: list, noMoreData: (response.data as List<ListModel>).isEmpty && loadMore));
-    } else if (response.hasErrorOnly) {
-      if (response.error?.message?.first != null) {
-        emit(Error(response.error?.message?.first!));
-      }
-      emit(Error('Some Thing went wrong'));
-    } else {
+    if (response == null) {
       emit(PaginationInitial());
+    } else {
+      if (response.hasDataOnly) {
+        if (loadMore) {
+          list.addAll(response.data as List<ListModel>);
+        } else {
+          list = response.data as List<ListModel>;
+        }
+
+        emit(GetListSuccessfully(
+            list: list.toSet().toList(),
+            noMoreData: (response.data.toSet().toList() as List<ListModel>).isEmpty && loadMore));
+      } else if (response.hasErrorOnly) {
+        if (response.error?.message?.first != null) {
+          emit(Error(response.error?.message?.first!));
+        }
+        emit(Error('Some Thing went wrong'));
+      } else {
+        emit(PaginationInitial());
+      }
     }
   }
 }

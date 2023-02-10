@@ -1,5 +1,6 @@
 import 'package:charja_charity/core/errors/http_error.dart';
 import 'package:charja_charity/core/results/result.dart';
+import 'package:charja_charity/features/user_managment/data/model/logout_model.dart';
 import 'package:charja_charity/features/user_managment/data/repository/auth_repository.dart';
 import 'package:charja_charity/features/user_managment/data/usecase/logout_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,23 +21,23 @@ void main() {
 
   //ResendOTPParams params = ResendOTPParams(email: "ibrahim@gmail.com");
   LogOutParams params = LogOutParams();
+  LogOutModel logOutModel = LogOutModel(message: "test");
   HttpError error = const HttpError(message: ['test error']);
 
   test('Success logout', () async {
-    when(authRepository!.LogOut(params: params)).thenAnswer((_) async => Result(
-          data: true,
+    when(authRepository!.LogOut(params: params)).thenAnswer((_) async => Result<LogOutModel>(
+          data: logOutModel,
         ));
 
     final result = await useCase!.call(params: params);
 
     expect(result.hasDataOnly, true);
-    expect(result.data, true);
+    expect(result.data, logOutModel);
     verify(useCase!.call(params: params));
   });
 
   test('fail logout', () async {
-    when(authRepository!.LogOut(params: params))
-        .thenAnswer((_) async => RemoteResult(error: error));
+    when(authRepository!.LogOut(params: params)).thenAnswer((_) async => RemoteResult(error: error));
 
     final result = await useCase!.call(params: params);
 

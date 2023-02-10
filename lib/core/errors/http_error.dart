@@ -1,8 +1,9 @@
 import './base_error.dart';
 
 class HttpError extends BaseError {
-  const HttpError({this.message});
+  const HttpError({this.message, this.messageQraphQl});
   final List<dynamic>? message;
+  final String? messageQraphQl;
 
   @override
   List<Object> get props => [];

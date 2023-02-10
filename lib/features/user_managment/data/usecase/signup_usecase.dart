@@ -2,17 +2,12 @@ import '../../../../core/params/base_params.dart';
 import '../../../../core/results/result.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../model/user_model.dart';
+import '../queries.dart';
 import '../repository/auth_repository.dart';
 
 class SignUpParams extends BaseParams {
-  SignUpParams(
-      {this.phone,
-      this.email,
-      this.firstName,
-      this.lastName,
-      this.roleKey,
-      this.password,
-      this.isCustomer});
+  SignUpParams({this.phone, this.email, this.firstName, this.lastName, this.roleKey, this.password, this.isCustomer})
+      : super(query: signUpQuery);
 
   final String? phone;
   final String? email;
@@ -24,13 +19,15 @@ class SignUpParams extends BaseParams {
 
   toJson() {
     return {
-      "roleKey": roleKey?.trim(),
-      "firstName": firstName?.trim(),
-      "lastName": lastName?.trim(),
-      "phoneNumber": phone?.trim(),
-      "email": email?.trim(),
-      "password": password?.trim(),
-      "isCustomer": isCustomer
+      "SignupUserDto": {
+        "roleKey": roleKey?.trim(),
+        "firstName": firstName?.trim(),
+        "lastName": lastName?.trim(),
+        "phoneNumber": phone?.trim(),
+        "email": email?.trim(),
+        "password": password?.trim(),
+        "isCustomer": isCustomer
+      }
     };
   }
 }
